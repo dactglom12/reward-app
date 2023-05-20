@@ -27,7 +27,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://34.116.149.220"],
+    origin: [
+      "http://localhost:3000",
+      "http://34.116.149.220",
+      "http://www.waterproof-jule.online",
+    ],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
       "Access-Control-Allow-Headers",

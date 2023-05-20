@@ -13,7 +13,7 @@ class AuthenticationController {
         httpOnly: true,
         expires: NEXT_DAY_DATE,
         secure: false,
-        domain: config.reactAppDomain ?? "localhost",
+        // domain: config.reactAppDomain ?? "localhost",
       });
 
       return res.status(201).json(user);
@@ -32,7 +32,7 @@ class AuthenticationController {
         httpOnly: true,
         expires: NEXT_DAY_DATE,
         secure: false,
-        domain: config.reactAppDomain ?? "localhost",
+        // domain: config.reactAppDomain ?? "localhost",
       });
 
       return res.status(200).json(user);

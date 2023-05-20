@@ -14,6 +14,7 @@ class AuthenticationController {
         expires: NEXT_DAY_DATE,
         secure: false,
         domain: config.reactAppDomain ?? "localhost",
+        sameSite: "none",
       });
 
       return res.status(201).json(user);
@@ -33,6 +34,7 @@ class AuthenticationController {
         expires: NEXT_DAY_DATE,
         secure: false,
         domain: config.reactAppDomain ?? "localhost",
+        sameSite: "none",
       });
 
       return res.status(200).json(user);

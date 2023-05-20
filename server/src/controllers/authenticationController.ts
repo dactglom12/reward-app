@@ -13,7 +13,7 @@ class AuthenticationController {
         httpOnly: true,
         expires: NEXT_DAY_DATE,
         secure: false,
-        sameSite: "none",
+        path: "/",
         // domain: config.reactAppDomain ?? "localhost",
       });
 
@@ -33,7 +33,7 @@ class AuthenticationController {
         httpOnly: true,
         expires: NEXT_DAY_DATE,
         secure: false,
-        sameSite: "none",
+        path: "/",
         // domain: config.reactAppDomain ?? "localhost",
       });
 

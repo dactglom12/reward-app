@@ -28,6 +28,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.options("*", cors());
 app.use(
   cors({
     origin: "http://34.116.149.220",

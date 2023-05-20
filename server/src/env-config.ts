@@ -10,4 +10,5 @@ export const config = {
   },
   port: parseInt(process.env.PORT as string),
   tokenSecret: process.env.TOKEN_SECRET as string,
+  reactAppDomain: process.env.REACT_APP_DOMAIN as string,
 };

@@ -1,6 +1,7 @@
 import { NEXT_DAY_DATE } from "@constants/date";
 import { AUTH_TOKEN_COOKIE_NAME } from "@constants/index";
 import { AuthenticationService } from "@services/authenticationService";
+import { config } from "../env-config";
 import { Request, Response } from "express";
 
 class AuthenticationController {
@@ -12,7 +13,7 @@ class AuthenticationController {
         httpOnly: true,
         expires: NEXT_DAY_DATE,
         secure: false,
-        domain: "localhost",
+        domain: config.reactAppDomain ?? "localhost",
       });
 
       return res.status(201).json(user);
@@ -31,7 +32,7 @@ class AuthenticationController {
         httpOnly: true,
         expires: NEXT_DAY_DATE,
         secure: false,
-        domain: "localhost",
+        domain: config.reactAppDomain ?? "localhost",
       });
 
       return res.status(200).json(user);

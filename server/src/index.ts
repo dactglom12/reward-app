@@ -40,6 +40,7 @@ app.use(
       "x-access-token",
       "credentials",
       "ACCESS-CONTROL-ALLOW-ORIGIN",
+      "Access-Control-Allow-Credentials",
     ],
     credentials: true,
     preflightContinue: true,

@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { renderRoutes } from "@routes/index";
+import { BrowserRouter } from "react-router-dom";
+import { RegularLayout } from "@components/Layouts";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { EventManagerProvider } from "@contexts/EventManagerContext";
+import { routes } from "@routes/constants";
+import { AuthenticationProvider } from "@contexts/AuthenticationContext";
+import { UserBalanceProvider } from "@contexts/UserBalanceContext";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <DndProvider backend={HTML5Backend}>
+        <UserBalanceProvider>
+          <AuthenticationProvider>
+            <EventManagerProvider>
+              {renderRoutes(routes, RegularLayout)}
+            </EventManagerProvider>
+          </AuthenticationProvider>
+        </UserBalanceProvider>
+      </DndProvider>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

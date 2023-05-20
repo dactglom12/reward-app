@@ -12,9 +12,8 @@ class AuthenticationController {
       res.cookie(AUTH_TOKEN_COOKIE_NAME, user.token, {
         httpOnly: true,
         expires: NEXT_DAY_DATE,
-        secure: true,
+        secure: false,
         domain: config.reactAppDomain ?? "localhost",
-        sameSite: "none",
       });
 
       return res.status(201).json(user);
@@ -32,9 +31,8 @@ class AuthenticationController {
       res.cookie(AUTH_TOKEN_COOKIE_NAME, user.token, {
         httpOnly: true,
         expires: NEXT_DAY_DATE,
-        secure: true,
+        secure: false,
         domain: config.reactAppDomain ?? "localhost",
-        sameSite: "none",
       });
 
       return res.status(200).json(user);

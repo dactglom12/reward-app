@@ -25,13 +25,9 @@ const loggerMiddleware = (req: Request, _res: Response, next: NextFunction) => {
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.options("*", cors());
 app.use(
   cors({
-    origin: "http://34.116.149.220",
+    origin: ["http://localhost:3000", "http://34.116.149.220"],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
       "Access-Control-Allow-Headers",
@@ -45,6 +41,10 @@ app.use(
     preflightContinue: true,
   })
 );
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use(loggerMiddleware);
 

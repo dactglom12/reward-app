@@ -44,7 +44,6 @@ app.use(
     ],
     credentials: true,
     preflightContinue: true,
-    exposedHeaders: ["Access-Control-Allow-Headers"],
   })
 );
 

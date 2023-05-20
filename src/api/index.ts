@@ -7,9 +7,6 @@ export const baseAxiosClient = axios.create({
 });
 
 baseAxiosClient.defaults.headers.common["credentials"] = "include";
-baseAxiosClient.defaults.headers.common[
-  "Access-Control-Allow-Origin".toUpperCase()
-] = "http://localhost:4000";
 
 export * from "./eventsApi";
 export * from "./authApi";

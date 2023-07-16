@@ -2,6 +2,7 @@ import { HomePage } from "@pages/Home";
 import { RouteConfig } from ".";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import { NotFoundPage } from "@pages/NotFound";
 import { LoginPage } from "@pages/Login";
 import { SignUpPage } from "@pages/SignUp";
@@ -14,6 +15,7 @@ export enum RoutePaths {
   AWARDS = "/awards",
   SIGN_UP = "/sign-up",
   TASKS = "/tasks",
+  PROFILE = "/profile",
 }
 
 export const menuSpecificRoutes: RouteConfig[] = [
@@ -38,6 +40,14 @@ export const menuSpecificRoutes: RouteConfig[] = [
     Icon: MailIcon,
     menuTitle: "Tasks",
     isProtected: true,
+  },
+  {
+    path: RoutePaths.PROFILE,
+    component: () => null,
+    Icon: VerifiedUserIcon,
+    exact: true,
+    isProtected: true,
+    menuTitle: "Profile",
   },
 ];
 

@@ -19,6 +19,8 @@ RUN yarn build
 # Stage 2: Create a lightweight production image with Nginx
 FROM nginx:alpine
 
+COPY ./nginx-custom/nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copy the built React app from the builder stage to the Nginx web root
 COPY --from=builder /app/build /usr/share/nginx/html
 

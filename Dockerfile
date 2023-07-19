@@ -24,6 +24,10 @@ COPY ./nginx-custom/nginx.conf /etc/nginx/conf.d/default.conf
 # Install Certbot
 RUN apk add certbot
 
+# Copy the SSL certificate files into the container
+COPY /etc/letsencrypt/live/www.waterproof-jule.online/fullchain.pem /etc/nginx/cert.crt
+COPY /etc/letsencrypt/live/www.waterproof-jule.online/fullchain.pem /etc/nginx/cert.key
+
 # Copy the built React app from the builder stage to the Nginx web root
 COPY --from=builder /app/build /usr/share/nginx/html
 

@@ -21,11 +21,15 @@ FROM nginx:alpine
 
 COPY ./nginx-custom/nginx.conf /etc/nginx/conf.d/default.conf
 
+# Install Certbot
+RUN apk add certbot
+
 # Copy the built React app from the builder stage to the Nginx web root
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # Expose the port on which your React app will run (Nginx default is 80)
 EXPOSE 80
+EXPOSE 443
 
 # Start Nginx to serve the React app
 CMD ["nginx", "-g", "daemon off;"]

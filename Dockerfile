@@ -1,5 +1,3 @@
-# ARG DOMAIN_NAME=www.waterproof-jule.online
-
 # Stage 1: Build the React app using Node.js
 FROM node:16.20.0 AS builder
 
@@ -23,15 +21,8 @@ FROM nginx:alpine
 
 COPY ./nginx-custom/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Install Certbot
-RUN apk add --no-cache certbot certbot-nginx
-
-# Run Certbot to obtain SSL certificate during image build
-RUN certbot certonly --nginx --agree-tos --non-interactive -d www.waterproof-jule.online
-
 # Copy the SSL certificate files to the appropriate location
-COPY /etc/letsencrypt/live/www.waterproof-jule.online/fullchain.pem /etc/nginx/certs/fullchain.pem
-COPY /etc/letsencrypt/live/www.waterproof-jule.online/privkey.pem /etc/nginx/certs/privkey.pem
+COPY /certs /etc/nginx/certs
 
 # Copy the built React app from the builder stage to the Nginx web root
 COPY --from=builder /app/build /usr/share/nginx/html

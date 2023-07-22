@@ -43,7 +43,7 @@ if needs_renewal; then
 fi
 
 # Step 3: Create the ssl_certificates directory if it doesn't exist
-mkdir -p ssl_certificates
+sudo mkdir -p ssl_certificates
 
 # Step 4: Copy SSL certificate files to the current directory (same as Dockerfile)
 echo "Copying SSL certificate files..."

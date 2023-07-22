@@ -2,11 +2,12 @@
 
 # Replace 'your_domain.com' with your actual domain name
 domain_name="www.waterproof-jule.online"
+docker_image_name="reward-app"
 
 # Function to obtain SSL certificate using Certbot
 function obtain_ssl_certificate() {
     echo "Obtaining SSL certificate for $domain_name ..."
-    sudo certbot certonly --standalone -d "$domain_name" --agree-tos -n -m your_email@example.com
+    sudo certbot certonly --standalone -d "$domain_name" --agree-tos -n -m dactglom.cloud@gmail.com
 }
 
 # Function to check if SSL certificate needs renewal
@@ -29,10 +30,10 @@ function needs_renewal() {
 # Function to build and run the Docker image with SSL configuration
 function build_and_run_docker() {
     echo "Building the Docker image..."
-    docker build -t my_react_app .
+    sudo docker build -t "$docker_image_name" .
 
     echo "Running the Docker container..."
-    docker run -p 80:80 -p 443:443 my_react_app
+    sudo docker run -p 80:80 -p 443:443 "$docker_image_name"
 }
 
 # Step 1: Check if SSL certificate needs renewal

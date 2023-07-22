@@ -33,7 +33,7 @@ function build_and_run_docker() {
     sudo docker build -t "$docker_image_name" .
 
     echo "Running the Docker container..."
-    sudo docker run -p 80:80 -p 443:443 "$docker_image_name"
+    sudo docker run -d -p 80:80 -p 443:443 "$docker_image_name"
 }
 
 # Step 1: Check if SSL certificate needs renewal

@@ -24,11 +24,10 @@ FROM nginx:alpine
 COPY ./nginx-custom/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Install Certbot
-RUN apk add certbot
-RUN apk add python3-certbot-nginx
+RUN apk add --no-cache certbot certbot-nginx
 
 # Run Certbot to obtain SSL certificate during image build
-RUN certbot certonly --standalone --agree-tos --nginx --non-interactive --email dactglom.cloud@gmail.com -d www.waterproof-jule.online
+RUN certbot certonly --nginx --agree-tos --non-interactive -d www.waterproof-jule.online
 
 # Copy the SSL certificate files to the appropriate location
 COPY /etc/letsencrypt/live/www.waterproof-jule.online/fullchain.pem /etc/nginx/certs/fullchain.pem

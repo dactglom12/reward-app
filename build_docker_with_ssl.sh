@@ -37,8 +37,7 @@ function build_and_run_docker() {
 }
 
 # Step 1: Check if SSL certificate needs renewal
-needs_renewal_result=$(needs_renewal)
-if [ "$needs_renewal_result" -eq 0 ]; then
+if needs_renewal; then
     # Step 2: Obtain SSL certificate
     obtain_ssl_certificate
 fi

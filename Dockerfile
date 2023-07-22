@@ -19,10 +19,15 @@ RUN yarn build
 # Stage 2: Create a lightweight production image with Nginx
 FROM nginx:alpine
 
-COPY ./nginx-custom/nginx.conf /etc/nginx/conf.d/default.conf
+# Install openssl in the Nginx container
+RUN apk update && apk add --no-cache openssl
 
-# Copy the SSL certificate files to the appropriate location
-COPY /certs /etc/nginx/certs
+# Copy the SSL certificate files to the container
+COPY ./ssl_certificates/mydomain.crt /etc/nginx/ssl/
+COPY ./ssl_certificates/mydomain.key /etc/nginx/ssl/
+
+# Copy the custom Nginx configuration with SSL settings
+COPY ./nginx-custom/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy the built React app from the builder stage to the Nginx web root
 COPY --from=builder /app/build /usr/share/nginx/html
@@ -31,5 +36,5 @@ COPY --from=builder /app/build /usr/share/nginx/html
 EXPOSE 80
 EXPOSE 443
 
-# Start Nginx to serve the React app
+# Start Nginx with SSL configuration to serve the React app
 CMD ["nginx", "-g", "daemon off;"]

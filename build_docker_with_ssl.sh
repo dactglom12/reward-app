@@ -6,7 +6,7 @@ domain_name="www.waterproof-jule.online"
 # Function to obtain SSL certificate using Certbot
 function obtain_ssl_certificate() {
     echo "Obtaining SSL certificate for $domain_name ..."
-    certbot certonly --standalone -d "$domain_name" --agree-tos -n -m your_email@example.com
+    sudo certbot certonly --standalone -d "$domain_name" --agree-tos -n -m your_email@example.com
 }
 
 # Function to check if SSL certificate needs renewal
@@ -45,15 +45,15 @@ fi
 # Step 3: Copy SSL certificate files to the current directory (same as Dockerfile)
 echo "Copying SSL certificate files..."
 cert_dir="/etc/letsencrypt/live/$domain_name"
-cp "$cert_dir/fullchain.pem" ./ssl_certificates/mydomain.crt
-cp "$cert_dir/privkey.pem" ./ssl_certificates/mydomain.key
+sudo cp "$cert_dir/fullchain.pem" ./ssl_certificates/mydomain.crt
+sudo cp "$cert_dir/privkey.pem" ./ssl_certificates/mydomain.key
 
 # Step 4: Build and run the Docker image with SSL configuration
 build_and_run_docker
 
 # Step 5: Cleanup - Remove the temporary SSL certificate files copied from Let's Encrypt
 echo "Cleaning up temporary SSL certificate files..."
-rm ./ssl_certificates/mydomain.crt
-rm ./ssl_certificates/mydomain.key
+sudo rm ./ssl_certificates/mydomain.crt
+sudo rm ./ssl_certificates/mydomain.key
 
 echo "Process completed successfully."

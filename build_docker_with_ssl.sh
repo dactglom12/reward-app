@@ -42,7 +42,10 @@ if needs_renewal; then
     obtain_ssl_certificate
 fi
 
-# Step 3: Copy SSL certificate files to the current directory (same as Dockerfile)
+# Step 3: Create the ssl_certificates directory if it doesn't exist
+mkdir -p ssl_certificates
+
+# Step 4: Copy SSL certificate files to the current directory (same as Dockerfile)
 echo "Copying SSL certificate files..."
 cert_dir="/etc/letsencrypt/live/$domain_name"
 sudo cp "$cert_dir/fullchain.pem" ./ssl_certificates/mydomain.crt

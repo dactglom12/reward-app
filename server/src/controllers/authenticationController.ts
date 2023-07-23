@@ -3,6 +3,11 @@ import { AUTH_TOKEN_COOKIE_NAME } from "@constants/index";
 import { AuthenticationService } from "@services/authenticationService";
 import { config } from "../env-config";
 import { Request, Response } from "express";
+import { isProdEnv } from "@utils/envUtils";
+
+const cookieDomain = isProdEnv()
+  ? undefined
+  : config.reactAppDomain ?? "localhost";
 
 class AuthenticationController {
   static async register(req: Request, res: Response) {
@@ -13,7 +18,7 @@ class AuthenticationController {
         httpOnly: true,
         expires: NEXT_DAY_DATE,
         secure: true,
-        domain: config.reactAppDomain ?? "localhost",
+        domain: cookieDomain,
       });
 
       return res.status(201).json(user);
@@ -32,7 +37,7 @@ class AuthenticationController {
         httpOnly: true,
         expires: NEXT_DAY_DATE,
         secure: true,
-        domain: config.reactAppDomain ?? "localhost",
+        domain: cookieDomain,
       });
 
       return res.status(200).json(user);

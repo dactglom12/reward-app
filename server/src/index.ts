@@ -65,8 +65,8 @@ if (isProdEnv()) {
   console.log("Running in prod env");
 
   const httpsOptions = {
-    key: fs.readFileSync("../private_key.pem"),
-    cert: fs.readFileSync("../certificate.pem"),
+    key: fs.readFileSync("/app/private_key.pem"),
+    cert: fs.readFileSync("/app/certificate.pem"),
   };
 
   const httpsPort = 443;

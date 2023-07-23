@@ -17,8 +17,8 @@ COPY . .
 EXPOSE 443
 
 # Copy your SSL/TLS certificate and private key to the container
-COPY ./ssl_certificates/mydomain.crt /app/private_key.pem
-COPY ./ssl_certificates/mydomain.key /app/certificate.pem
+COPY ./ssl_certificates/mydomain.crt /app/certificate.pem
+COPY ./ssl_certificates/mydomain.key /app/private_key.pem
 
 # Start your Express app using HTTPS
 CMD ["yarn", "run" ,"start"]

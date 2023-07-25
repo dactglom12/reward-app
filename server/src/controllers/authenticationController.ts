@@ -1,9 +1,9 @@
-import { NEXT_DAY_DATE } from "@constants/date";
 import { AUTH_TOKEN_COOKIE_NAME } from "@constants/index";
 import { AuthenticationService } from "@services/authenticationService";
 import { config } from "../env-config";
 import { Request, Response } from "express";
 import { isProdEnv } from "@utils/envUtils";
+import { getNextDayDate } from "@utils/dateUtils";
 
 const cookieDomain = isProdEnv()
   ? undefined
@@ -16,7 +16,7 @@ class AuthenticationController {
 
       res.cookie(AUTH_TOKEN_COOKIE_NAME, user.token, {
         httpOnly: true,
-        expires: NEXT_DAY_DATE,
+        expires: getNextDayDate(),
         secure: true,
         domain: cookieDomain,
       });
@@ -35,7 +35,7 @@ class AuthenticationController {
 
       res.cookie(AUTH_TOKEN_COOKIE_NAME, user.token, {
         httpOnly: true,
-        expires: NEXT_DAY_DATE,
+        expires: getNextDayDate(),
         secure: true,
         domain: cookieDomain,
       });

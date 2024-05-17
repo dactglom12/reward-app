@@ -13,7 +13,7 @@ export const UserTitle = styled(Typography)({
   fontWeight: 500,
   color: Colors.WHITE,
   lineHeight: "1.5",
-  fontSize: "1.4rem",
+  fontSize: "1rem",
 });
 
 export const UserInfoContainer = styled(Grid)(({ theme }) => ({
@@ -26,7 +26,7 @@ export const UserInfoContainer = styled(Grid)(({ theme }) => ({
 export const UserEmail = styled(Typography)(() => ({
   fontWeight: 500,
   color: Colors.GREY,
-  fontSize: "1.3rem",
+  fontSize: "0.9rem",
 }));
 
 export const Avatar = styled(MuiAvatar)(({ theme }) => ({
@@ -37,7 +37,7 @@ export const Avatar = styled(MuiAvatar)(({ theme }) => ({
 }));
 
 export const LinkGroupsContainer = styled(Grid)(() => ({
-  padding: "0 1.2rem",
+  padding: "0 0.8rem",
   display: "flex",
   flexDirection: "column",
 }));

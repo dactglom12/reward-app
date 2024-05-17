@@ -11,11 +11,11 @@ interface CardProps
 const CardContainer = styled("div")({
   boxShadow:
     "rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px",
-  borderRadius: "1.6rem",
-  paddingRight: "2.4rem",
-  paddingLeft: "2.4rem",
-  paddingBottom: "2.4rem",
-  paddingTop: "2.6rem",
+  borderRadius: "1.2rem",
+  paddingRight: "1.8rem",
+  paddingLeft: "1.8rem",
+  paddingBottom: "1.8rem",
+  paddingTop: "2rem",
   backgroundColor: Colors.WHITE,
 });
 

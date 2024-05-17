@@ -6,17 +6,21 @@ type WordGroup = {
 } & WithDBId &
   WithTimestamps;
 
-const wordGroupSchema = new mongoose.Schema<WordGroup>(
-  {
-    title: {
-      type: String,
-      required: true,
-      unique: true,
+const getWordGroupSchema = (isTitleUnique: boolean) =>
+  new mongoose.Schema<WordGroup>(
+    {
+      title: {
+        type: String,
+        required: true,
+        unique: isTitleUnique,
+      },
     },
-  },
-  { timestamps: true }
+    { timestamps: true }
+  );
+
+const WordGroupModel = mongoose.model<WordGroup>(
+  "WordGroup",
+  getWordGroupSchema(true)
 );
 
-const WordGroupModel = mongoose.model<WordGroup>("WordGroup", wordGroupSchema);
-
-export { WordGroup, WordGroupModel, wordGroupSchema };
+export { WordGroup, WordGroupModel, getWordGroupSchema };

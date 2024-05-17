@@ -40,11 +40,11 @@ export const ToolbarContainer = styled(Box)(({ theme }) => ({
 
 export const ToolbarLabel = styled("span")(({ theme }) => ({
   letterSpacing: "-0.025em",
-  fontSize: "2rem",
+  fontSize: "1.4rem",
   lineHeight: "1.5",
   fontWeight: 600,
   fontFamily: theme.typography.fontFamily,
-  width: "16rem",
+  width: "12rem",
 }));
 
 export const ToolbarButtonsContainer = styled(Box)(({ theme }) => ({
@@ -58,7 +58,7 @@ export const ToolbarButtonsContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const MonthHeaderContainer = styled(Box)(() => ({
-  height: "2rem",
+  height: "1.2rem",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -68,7 +68,7 @@ export const MonthHeaderContainer = styled(Box)(() => ({
 export const MonthHeaderLabel = styled("span")(({ theme }) => ({
   fontWeight: 500,
   fontFamily: theme.typography.fontFamily,
-  fontSize: "1.2rem",
+  fontSize: "0.8rem",
   textTransform: "uppercase",
 }));
 

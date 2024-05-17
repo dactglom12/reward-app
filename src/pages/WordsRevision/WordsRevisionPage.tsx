@@ -15,7 +15,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { WordsApi } from "@api/wordsApi";
 import { Word, WordGroup, WordTrainingSession } from "@typings/word";
 import { UploadButton } from "@components/UploadButton";
@@ -26,6 +26,8 @@ import "swiper/css/navigation";
 import { Navigation, Keyboard } from "swiper/modules";
 import { KeyboardBackspace } from "@mui/icons-material";
 import { useOpenCloseToggle } from "@hooks/useOpenCloseToggle";
+import { WordGroupChartsSection } from "./WordGroupChartsSection";
+import { sortGroups } from "./utils";
 
 const TopContainer = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(2),
@@ -51,20 +53,6 @@ const LoaderWrapper = styled(Box)({
   alignItems: "center",
 });
 
-const sortGroups = (groups: WordGroup[]) => {
-  const sorted = groups.sort((groupA, groupB) => {
-    const numbersOnlyRegexp = new RegExp(/\d+/g);
-    const numB = numbersOnlyRegexp.exec(groupA.title);
-    const numA = numbersOnlyRegexp.exec(groupB.title);
-
-    if (!numB || !numA) return 0;
-
-    return +numB[0] - +numA[0];
-  });
-
-  return sorted;
-};
-
 const randomWordAmountOptions = [10, 15, 20, 25];
 
 export const WordsRevisionPage: React.FC = () => {
@@ -85,6 +73,19 @@ export const WordsRevisionPage: React.FC = () => {
   const [trainingSessionHash, setTrainingSessionHash] = useState<
     Record<string, boolean>
   >({});
+
+  const correctWords = useMemo(
+    () =>
+      words
+        .map((word) => {
+          if (typeof trainingSessionHash[word._id] === "undefined")
+            return false;
+
+          return trainingSessionHash[word._id];
+        })
+        .filter((val) => val),
+    [trainingSessionHash, words]
+  );
 
   const loadWordGroups = async () => {
     const groupsResponse = await WordsApi.getAllWordGroups();
@@ -165,18 +166,12 @@ export const WordsRevisionPage: React.FC = () => {
     if (!wordGroup) return;
 
     try {
-      const answers = words.map((word) => {
-        if (typeof trainingSessionHash[word._id] === "undefined") return false;
-
-        return trainingSessionHash[word._id];
-      });
-
       const trainingSession: Pick<
         WordTrainingSession,
         "correctAnswersCount" | "wordsCount" | "group"
       > = {
         group: wordGroup,
-        correctAnswersCount: answers.filter((value) => value).length,
+        correctAnswersCount: correctWords.length,
         wordsCount: words.length,
       };
 
@@ -247,12 +242,15 @@ export const WordsRevisionPage: React.FC = () => {
             </Grid>
           </Grid>
           {sortGroups(groups).map((group) => (
-            <Grid xs={4} item key={group._id}>
+            <Grid xs={12} md={6} item key={group._id}>
               <Button variant="contained" onClick={() => chooseGroup(group)}>
                 {group.title}
               </Button>
             </Grid>
           ))}
+        </Grid>
+        <Grid mt={5} item xs={12}>
+          {groups.length > 0 && <WordGroupChartsSection wordGroups={groups} />}
         </Grid>
       </Container>
     );
@@ -316,19 +314,14 @@ export const WordsRevisionPage: React.FC = () => {
           )}
           <Typography variant="body2">
             You got
-            <span style={{ fontWeight: "bold" }}>
-              {
-                words
-                  .map((word) => {
-                    if (typeof trainingSessionHash[word._id] === "undefined")
-                      return false;
-
-                    return trainingSessionHash[word._id];
-                  })
-                  .filter((val) => !val).length
-              }
-              /{words.length}
-            </span>{" "}
+            <Typography
+              component="span"
+              fontWeight="bold"
+              variant="caption"
+              mx={2}
+            >
+              {correctWords.length}/{words.length}
+            </Typography>{" "}
             right
           </Typography>
         </DialogContent>

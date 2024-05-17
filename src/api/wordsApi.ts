@@ -17,6 +17,14 @@ interface GetAllWordsParams {
   group?: string;
 }
 
+export interface GetTrainingSessionParams {
+  groupId: string;
+}
+
+export interface GetTrainingSessionResponse {
+  sessions: WordTrainingSession[];
+}
+
 class WordsApi {
   static async uploadWords(
     file: File,
@@ -63,6 +71,14 @@ class WordsApi {
     >
   ) {
     return baseAxiosClient.post(`${subroute}/training-session`, dto);
+  }
+
+  static async getSessions(
+    dto: GetTrainingSessionParams
+  ): Promise<AxiosResponse<GetTrainingSessionResponse>> {
+    await sleep(500);
+
+    return baseAxiosClient.get(`${subroute}/training-session/${dto.groupId}`);
   }
 }
 

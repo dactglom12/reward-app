@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 export const Title = styled("p")(({ theme }) => ({
   letterSpacing: "-.025em",
   fontWeight: 800,
-  fontSize: "3.2rem",
+  fontSize: "2.4rem",
   fontFamily: theme.typography.fontFamily,
 }));
 
@@ -18,7 +18,7 @@ export const SubtitleSectionContainer = styled("div")(({ theme }) => ({
 
 export const Subtitle = styled("span")(({ theme }) => ({
   lineHeight: 1.5,
-  fontSize: "1.4rem",
+  fontSize: "1rem",
   fontWeight: 400,
   color: Colors.DARK_BLUE,
   fontFamily: theme.typography.fontFamily,
@@ -27,7 +27,7 @@ export const Subtitle = styled("span")(({ theme }) => ({
 
 export const SignUpLink = styled(NavLink)(({ theme }) => ({
   fontFamily: theme.typography.fontFamily,
-  fontSize: "1.4rem",
+  fontSize: "1rem",
   fontWeight: 500,
 }));
 
@@ -50,6 +50,6 @@ export const InputContainer = styled(TextField)(({ theme }) => ({
 export const Button = styled(MuiButton)(({ theme }) => ({
   fontFamily: theme.typography.fontFamily,
   fontWeight: 500,
-  fontSize: "1.5rem",
+  fontSize: "1.1rem",
   marginTop: theme.spacing(3),
 }));

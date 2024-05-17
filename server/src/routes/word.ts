@@ -133,4 +133,16 @@ router.post("/training-session", async (req, res) => {
   }
 });
 
+router.get("/training-session/:groupId", async (req, res) => {
+  try {
+    const trainingSessions = await WordTrainingSessionService.getAllByGroupId(
+      req.params.groupId
+    );
+
+    return res.json({ sessions: trainingSessions });
+  } catch (error) {
+    return res.json({ error: (error as { message: string }).message });
+  }
+});
+
 export default router;

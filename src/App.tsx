@@ -30,28 +30,28 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          fontSize: "1.3rem",
+          fontSize: "1rem",
         },
       },
     },
     MuiSelect: {
       styleOverrides: {
         root: {
-          fontSize: "1.3rem",
+          fontSize: "1rem",
         },
       },
     },
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          fontSize: "1.3rem",
+          fontSize: "1rem",
         },
       },
     },
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          fontSize: "1.3rem",
+          fontSize: "1rem",
         },
       },
     },

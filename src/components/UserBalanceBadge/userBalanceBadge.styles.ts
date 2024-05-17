@@ -3,8 +3,8 @@ import { Colors } from "constants/styles";
 import { ReactComponent as CoinSvg } from "@assets/icons/coin.svg";
 
 export const BadgeContainer = styled("div")({
-  borderRadius: "1.6rem",
-  padding: `1.6rem`,
+  borderRadius: "1.2rem",
+  padding: `1.2rem`,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -14,19 +14,19 @@ export const BadgeContainer = styled("div")({
 export const CoinsText = styled("span")(({ theme }) => ({
   fontFamily: theme.typography.fontFamily,
   color: Colors.WHITE,
-  fontSize: "1.4rem",
+  fontSize: "1rem",
   marginRight: theme.spacing(1),
 }));
 
 export const CoinIcon = styled(CoinSvg)(() => ({
-  width: "1.4rem",
-  height: "1.4rem",
+  width: "1rem",
+  height: "1rem",
 }));
 
 export const CoinsAmount = styled("span")(({ theme }) => ({
   fontFamily: theme.typography.fontFamily,
   fontWeight: 700,
-  fontSize: "1.4rem",
+  fontSize: "1rem",
   marginLeft: theme.spacing(1),
   color: Colors.BRIGHT_YELLOW,
 }));

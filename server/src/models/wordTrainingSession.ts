@@ -1,6 +1,6 @@
 import { WithDBId, WithTimestamps } from "@typings/common";
 import mongoose from "mongoose";
-import { WordGroup, wordGroupSchema } from "./wordGroupModel";
+import { WordGroup, getWordGroupSchema } from "./wordGroupModel";
 
 type WordTrainingSession = {
   wordsCount: number;
@@ -13,7 +13,7 @@ const wordTrainingSessionSchema = new mongoose.Schema<WordTrainingSession>(
   {
     correctAnswersCount: Number,
     wordsCount: Number,
-    group: wordGroupSchema,
+    group: getWordGroupSchema(false),
   },
   { timestamps: true }
 );

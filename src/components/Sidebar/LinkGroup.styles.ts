@@ -21,13 +21,13 @@ export const GroupTitle = styled(Typography)({
   textTransform: "uppercase",
   lineHeight: "20px",
   fontWeight: 600,
-  fontSize: "1.2rem !important",
+  fontSize: "1rem !important",
 });
 
 export const GroupSubtitle = styled(Typography)({
   color: Colors.LIGHT_GREY,
   letterSpacing: "0.06px",
-  fontSize: "1.1rem !important",
+  fontSize: "0.9rem !important",
   fontWeight: 500,
 });
 
@@ -54,7 +54,7 @@ export const ActiveLink = styled(Link)({
 
 export const LinkTitle = styled(Typography)(({ theme }) => ({
   marginLeft: theme.spacing(1),
-  fontSize: "1.4rem !important",
+  fontSize: "1rem !important",
 }));
 
 export const LinkIcon = styled(Box)(() => ({

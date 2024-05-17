@@ -1,7 +1,7 @@
 import { Calendar } from "@components/Calendar";
 import { DroppableWrapper } from "@components/DroppableWrapper";
 import { EventManagerContext } from "@contexts/EventManagerContext";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { ItemTypes } from "@typings/dragAndDrop";
 import * as React from "react";
 import { Views } from "react-big-calendar";
@@ -12,6 +12,7 @@ import { DraggableWrapper } from "@components/DraggableWrapper";
 import { getAssignedEvents, transform } from "@utilities/eventUtils";
 import { startOfMonth, endOfMonth } from "date-fns";
 import { EventsApi } from "@api/eventsApi";
+import { DateCellContainer } from "@components/Calendar/calendar.styles";
 
 const DROPPABLE_CLASSNAME = `droppable-day-wrapper`;
 
@@ -69,7 +70,7 @@ export const RightPanel: React.FC = () => {
   };
 
   return (
-    <Grid item md={8}>
+    <Grid item>
       <DroppableWrapper
         onDrop={handleDropAppEvent}
         acceptItemType={ItemTypes.EVENT}
@@ -93,17 +94,18 @@ export const RightPanel: React.FC = () => {
           components={{
             dateCellWrapper: ({ children, value }) => {
               return (
-                <div
+                <DateCellContainer
                   data-value={value}
                   style={{
                     width: "calc(100% / 7)",
                   }}
-                  className={DROPPABLE_CLASSNAME}
+                  className={`${DROPPABLE_CLASSNAME}`}
                 >
                   {children}
-                </div>
+                </DateCellContainer>
               );
             },
+
             eventWrapper: (props) => {
               return (
                 <DraggableWrapper

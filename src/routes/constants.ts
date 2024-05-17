@@ -1,13 +1,13 @@
 import { HomePage } from "@pages/Home";
 import { RouteConfig } from ".";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
-import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import { Mail, Inbox, VerifiedUser } from "@mui/icons-material";
 import { NotFoundPage } from "@pages/NotFound";
 import { LoginPage } from "@pages/Login";
 import { SignUpPage } from "@pages/SignUp";
 import AwardsPage from "@pages/Award/AwardsPage";
 import { TasksPage } from "@pages/Tasks";
+import { LinkGroupIds } from "@components/Sidebar/types";
+import { WordsRevisionPage } from "@pages/WordsRevision";
 
 export enum RoutePaths {
   HOME = "/",
@@ -16,6 +16,7 @@ export enum RoutePaths {
   SIGN_UP = "/sign-up",
   TASKS = "/tasks",
   PROFILE = "/profile",
+  WORDS_REVISION = "/words-revision",
 }
 
 export const menuSpecificRoutes: RouteConfig[] = [
@@ -23,44 +24,55 @@ export const menuSpecificRoutes: RouteConfig[] = [
     path: RoutePaths.HOME,
     component: HomePage,
     // TODO: add route specific icons
-    Icon: InboxIcon,
+    Icon: Inbox,
     menuTitle: "Recipes",
     isProtected: true,
+    groupId: LinkGroupIds.HOME,
   },
   {
     path: RoutePaths.AWARDS,
     component: AwardsPage,
-    Icon: MailIcon,
+    Icon: Mail,
     menuTitle: "Awards",
     isProtected: true,
+    groupId: LinkGroupIds.HOME,
   },
   {
     path: RoutePaths.TASKS,
     component: TasksPage,
-    Icon: MailIcon,
+    Icon: Mail,
     menuTitle: "Tasks",
     isProtected: true,
+    groupId: LinkGroupIds.HOME,
   },
+  // {
+  //   path: RoutePaths.PROFILE,
+  //   component: () => null,
+  //   Icon: VerifiedUser,
+  //   exact: true,
+  //   isProtected: true,
+  //   menuTitle: "Profile",
+  //   groupId: LinkGroupIds.HOME,
+  // },
   {
-    path: RoutePaths.PROFILE,
-    component: () => null,
-    Icon: VerifiedUserIcon,
+    path: RoutePaths.WORDS_REVISION,
+    component: WordsRevisionPage,
+    Icon: VerifiedUser,
     exact: true,
     isProtected: true,
-    menuTitle: "Profile",
+    menuTitle: "Words",
+    groupId: LinkGroupIds.HOME,
   },
 ];
 
-const regularRoutes: RouteConfig[] = [
+export const publicRoutes: RouteConfig[] = [
   { path: RoutePaths.LOGIN, component: LoginPage, exact: true },
   { path: RoutePaths.SIGN_UP, component: SignUpPage, exact: true },
 ];
 
-export const routes: RouteConfig[] = [
-  ...menuSpecificRoutes,
-  ...regularRoutes,
-  {
-    path: "*",
-    component: NotFoundPage,
-  },
-];
+export const regularLayoutRoutes: RouteConfig[] = [...menuSpecificRoutes];
+
+export const notFoundPageRoute = {
+  path: "*",
+  component: NotFoundPage,
+};

@@ -1,4 +1,4 @@
-import { Box, Link, Typography } from "@material-ui/core";
+import { Box, Link, Typography } from "@mui/material";
 import * as React from "react";
 
 export const AuthorSection: React.FC = () => (

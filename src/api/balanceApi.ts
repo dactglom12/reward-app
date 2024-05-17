@@ -7,7 +7,7 @@ interface UpdateUserBalanceParams {
   updateSum: number;
 }
 
-class BalanceApi {
+export class BalanceApi {
   static async getUserBalance(): Promise<
     AxiosResponse<{ balance: { balance: number } }>
   > {
@@ -20,5 +20,3 @@ class BalanceApi {
     return baseAxiosClient.post(`${subroute}/update`, { updateSum });
   }
 }
-
-export { BalanceApi };

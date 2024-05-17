@@ -2,7 +2,7 @@ import { CreateEventPanel } from "@components/CreateEventPanel";
 import { DraggableWrapper } from "@components/DraggableWrapper";
 import { EventCard } from "@components/EventCard";
 import { EventManagerContext } from "@contexts/EventManagerContext";
-import { Box, Grid, List } from "@material-ui/core";
+import { Box, Grid, List } from "@mui/material";
 import { ItemTypes } from "@typings/dragAndDrop";
 import { getUnassignedEvents } from "@utilities/eventUtils";
 import * as React from "react";

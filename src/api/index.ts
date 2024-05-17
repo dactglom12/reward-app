@@ -11,5 +11,5 @@ baseAxiosClient.defaults.headers.common[
   "Access-Control-Allow-Origin".toUpperCase()
 ] = "http://www.waterproof-jule.online";
 
-export * from "./eventsApi";
-export * from "./authApi";
+// export * from "./eventsApi";
+// export * from "./authApi";

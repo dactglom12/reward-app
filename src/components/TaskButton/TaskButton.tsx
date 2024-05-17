@@ -1,6 +1,6 @@
 import { TaskApi } from "@api/taskApi";
 import { UserBalanceContext } from "@contexts/UserBalanceContext";
-import { Box, Button, Typography } from "@material-ui/core";
+import { Box, Button, Typography } from "@mui/material";
 import { TaskTypes } from "@typings/task";
 import * as React from "react";
 

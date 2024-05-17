@@ -1,18 +1,25 @@
 import React from "react";
-import { Header } from "@components/Header";
-import { useTheme } from "@material-ui/core";
+import { Box, styled } from "@mui/material";
+import { Sidebar } from "@components/Sidebar";
 
 interface Props {
   children: React.ReactNode;
 }
 
-export const RegularLayout: React.FC<Props> = ({ children }) => {
-  const theme = useTheme();
+const Container = styled(Box)({
+  display: "flex",
+  justifyContent: "space-between",
+});
 
-  return (
-    <div>
-      <Header />
-      <div style={{ padding: theme.spacing(2) }}>{children}</div>
-    </div>
-  );
-};
+const ContentContainer = styled(Box)(({ theme }) => ({
+  width: "calc(100% - 280px)",
+  padding: theme.spacing(4),
+  boxSizing: "border-box",
+}));
+
+export const RegularLayout: React.FC<Props> = ({ children }) => (
+  <Container>
+    <Sidebar isOpen onClose={() => null} />
+    <ContentContainer>{children}</ContentContainer>
+  </Container>
+);

@@ -25,7 +25,7 @@
       "@api/*": ["api/*"],
       "@routes/*": ["routes/*"],
       "@contexts/*": ["contexts/*"],
-      "@utilities/*": ["utils/*"]
+      "@utilities/*": ["utils/*"],
     }
   },
   "include": ["src"]

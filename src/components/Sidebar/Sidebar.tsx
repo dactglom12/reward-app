@@ -1,78 +1,100 @@
 import React from "react";
-import {
-  makeStyles,
-  createStyles,
-  Theme,
-  useTheme,
-} from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-
+// import { useTheme } from "@mui/material/styles";
+import Drawer from "@mui/material/Drawer";
 import { WithOpenClosedState } from "@typings/shared";
-import { IconButton, useMediaQuery } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import { NavLink } from "react-router-dom";
+import { Grid } from "@mui/material";
 import { menuSpecificRoutes } from "@routes/constants";
+import {
+  Avatar,
+  LinkGroupsContainer,
+  UserBalanceContainer,
+  UserEmail,
+  UserInfoContainer,
+  UserTitle,
+} from "./Sidebar.styles";
+import { RouteConfig } from "@routes/renderRoutes";
+import { LinkGroupIds } from "./types";
+import { LinkGroup } from "./LinkGroup";
+import { ExitToApp } from "@mui/icons-material";
+import { AuthenticationContext } from "@contexts/AuthenticationContext";
+import { UserBalanceBadge } from "@components/UserBalanceBadge";
+import { Colors } from "constants/styles";
 
 interface Props extends WithOpenClosedState {}
 
+const groups: Record<
+  string,
+  { title: string; subtitle: string; links: RouteConfig[] }
+> = {
+  [LinkGroupIds.HOME]: {
+    title: "Dashboards",
+    subtitle: "Unique dashboard designs",
+    links: [],
+  },
+};
+
+const generateRouteGroups = (routes: RouteConfig[]) => {
+  const groupsHash = { ...groups };
+
+  routes.forEach((route) => {
+    if (!route.groupId || !groupsHash[route.groupId]) return;
+
+    groupsHash[route.groupId].links.push(route);
+  });
+
+  return groupsHash;
+};
+
+const routeGroups = generateRouteGroups(menuSpecificRoutes);
+
 export const Sidebar: React.FC<Props> = ({ isOpen, onClose }) => {
-  const classes = useStyles();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  // const theme = useTheme();
+  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { logout } = React.useContext(AuthenticationContext);
 
   return (
     <Drawer
       open={isOpen}
       onClose={onClose}
-      classes={{ paper: classes.drawerPaper }}
+      variant="persistent"
+      anchor="left"
+      PaperProps={{
+        sx: (theme) => ({
+          width: "280px",
+          [theme.breakpoints.down("sm")]: {
+            width: "100%",
+          },
+          background: Colors.DARK_BLUE,
+        }),
+      }}
     >
-      {isMobile && (
+      {/* {isMobile && (
         <div className={classes.mobileClose}>
           <IconButton color="inherit" onClick={onClose}>
             <CloseIcon />
           </IconButton>
         </div>
-      )}
-      <List>
-        {menuSpecificRoutes.map(({ Icon, menuTitle, path }) => (
-          <ListItem
-            onClick={onClose}
-            component={NavLink}
-            to={path}
-            button
-            key={path}
-          >
-            {Icon && (
-              <ListItemIcon>
-                <Icon />
-              </ListItemIcon>
-            )}
-            <ListItemText primary={menuTitle} />
-          </ListItem>
-        ))}
-      </List>
+      )} */}
+      <Grid container>
+        <UserInfoContainer item xs={12}>
+          <Avatar>TBD</Avatar>
+          <UserTitle>Name Surname</UserTitle>
+          <UserEmail>example@gmail.com</UserEmail>
+          <UserBalanceContainer>
+            <UserBalanceBadge />
+          </UserBalanceContainer>
+        </UserInfoContainer>
+        <LinkGroupsContainer item xs={12}>
+          {Object.values(routeGroups).map((props) => (
+            <LinkGroup key={props.title} {...props} />
+          ))}
+          <LinkGroup
+            key="buttons-action-group"
+            title="Auth"
+            buttons={[{ Icon: ExitToApp, label: "Sign out", onClick: logout }]}
+          />
+        </LinkGroupsContainer>
+      </Grid>
     </Drawer>
   );
 };
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    drawerPaper: {
-      width: "250px",
-      [theme.breakpoints.down("sm")]: {
-        width: "100%",
-      },
-    },
-    mobileClose: {
-      position: "absolute",
-      top: 0,
-      right: 0,
-      padding: theme.spacing(1),
-      zIndex: theme.zIndex.modal + 1,
-    },
-  })
-);

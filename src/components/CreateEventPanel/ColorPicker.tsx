@@ -7,7 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useOpenCloseToggle } from "@hooks/useOpenCloseToggle";
 
 interface ColorPickerProps {

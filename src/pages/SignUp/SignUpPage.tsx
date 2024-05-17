@@ -6,38 +6,38 @@ import {
   TextField,
   Grid,
   Typography,
-  makeStyles,
   Container,
-} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+  styled,
+} from "@mui/material";
+import { LockOutlined } from "@mui/icons-material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { RoutePaths } from "@routes/constants";
 import { AuthorSection } from "@components/AuthorSection";
 import { AuthApi } from "@api/authApi";
 import { AuthenticationContext } from "@contexts/AuthenticationContext";
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+const Paper = styled("div")(({ theme }) => ({
+  marginTop: theme.spacing(8),
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+}));
+
+const AvatarElement = styled(Avatar)(({ theme }) => ({
+  margin: theme.spacing(1),
+  backgroundColor: theme.palette.secondary.main,
+}));
+
+const Form = styled("form")(({ theme }) => ({
+  width: "100%", // Fix IE 11 issue.
+  marginTop: theme.spacing(1),
+}));
+
+const Submit = styled(Button)(({ theme }) => ({
+  margin: theme.spacing(3, 0, 2),
 }));
 
 export const SignUpPage: React.FC = () => {
-  const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -73,14 +73,14 @@ export const SignUpPage: React.FC = () => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+      <Paper>
+        <AvatarElement>
+          <LockOutlined />
+        </AvatarElement>
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -142,15 +142,9 @@ export const SignUpPage: React.FC = () => {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+          <Submit type="submit" fullWidth variant="contained" color="primary">
             Sign Up
-          </Button>
+          </Submit>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <NavLink to={RoutePaths.LOGIN}>
@@ -158,8 +152,8 @@ export const SignUpPage: React.FC = () => {
               </NavLink>
             </Grid>
           </Grid>
-        </form>
-      </div>
+        </Form>
+      </Paper>
       <AuthorSection />
     </Container>
   );

@@ -1,33 +1,30 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "90vh",
-    backgroundColor: theme.palette.background.default,
-  },
-  text: {
-    marginTop: theme.spacing(2),
-    color: theme.palette.text.secondary,
-  },
+const Root = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "90vh",
+  backgroundColor: theme.palette.background.default,
+}));
+
+const Text = styled(Typography)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  color: theme.palette.text.secondary,
 }));
 
 export const NotFoundPage: React.FC = () => {
-  const classes = useStyles();
-
   return (
-    <div className={classes.root}>
+    <Root>
       <Typography variant="h2" align="center">
         404
       </Typography>
-      <Typography variant="h5" align="center" className={classes.text}>
+      <Text variant="h5" align="center">
         Oops! We couldn't find the page you're looking for.
-      </Typography>
-    </div>
+      </Text>
+    </Root>
   );
 };

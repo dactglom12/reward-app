@@ -10,7 +10,7 @@ interface GetAllEventsParams {
   endDate?: Date;
 }
 
-class EventsApi {
+export class EventsApi {
   static async createEvent(
     dto: EventDto
   ): Promise<AxiosResponse<{ event: Event }>> {
@@ -55,5 +55,3 @@ class EventsApi {
     return baseAxiosClient.put(`${subroute}/${id}`, updatedFields);
   }
 }
-
-export { EventsApi };

@@ -1,13 +1,13 @@
 import * as React from "react";
 import { TaskButton } from "@components/TaskButton";
-import { Box, Divider, useTheme } from "@material-ui/core";
+import { Box, Divider, useTheme } from "@mui/material";
 import { TaskTypes } from "@typings/task";
 
 export const TasksPage: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <Box sx={{ maxWidth: 600, margin: "auto" }}>
+    <Box sx={{ maxWidth: 600 }}>
       <TaskButton
         taskType={TaskTypes.WATER_CONSUMPTION}
         buttonSectionTitle="Water consumption"

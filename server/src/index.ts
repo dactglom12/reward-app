@@ -8,6 +8,7 @@ import awardsRouter from "@routes/awards";
 import balanceRouter from "@routes/balance";
 import userAwardsRouter from "@routes/userAwards";
 import tasksRouter from "@routes/tasks";
+import wordsRouter from "@routes/word";
 import bodyParser from "body-parser";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -16,6 +17,7 @@ import "@listeners/userListeners";
 import { isProdEnv } from "@utils/envUtils";
 import https from "https";
 import fs from "fs";
+import * as PlayHT from "playht";
 
 const loggerMiddleware = (req: Request, _res: Response, next: NextFunction) => {
   console.log(
@@ -30,7 +32,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://www.waterproof-jule.online"],
+    origin: [
+      "http://localhost:3000",
+      "https://www.waterproof-jule.online",
+      "http://localhost:3001",
+    ],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
       "Access-Control-Allow-Headers",
@@ -58,32 +64,38 @@ app.use("/awards", awardsRouter);
 app.use("/balance", balanceRouter);
 app.use("/user-awards", userAwardsRouter);
 app.use("/tasks", tasksRouter);
+app.use("/words", wordsRouter);
 
 streakCheckJob.start();
 
-if (isProdEnv()) {
-  console.log("Running in prod env");
+// if (isProdEnv()) {
+//   console.log("Running in prod env");
 
-  const httpsOptions = {
-    key: fs.readFileSync("/app/private_key.pem"),
-    cert: fs.readFileSync("/app/certificate.pem"),
-  };
+//   const httpsOptions = {
+//     key: fs.readFileSync("/app/private_key.pem"),
+//     cert: fs.readFileSync("/app/certificate.pem"),
+//   };
 
-  const httpsPort = 443;
+//   const httpsPort = 443;
 
-  const server = https.createServer(httpsOptions, app);
+//   const server = https.createServer(httpsOptions, app);
 
-  connect().then(() => {
-    server.listen(httpsPort, () => {
-      console.log(`App listening at https port`);
-    });
+//   connect().then(() => {
+//     server.listen(httpsPort, () => {
+//       console.log(`App listening at https port`);
+//     });
+//   });
+// } else {
+console.log("Running in dev env");
+
+// PlayHT.init({
+//   apiKey: config.textToSpeech.apiKey,
+//   userId: config.textToSpeech.userId,
+// });
+
+connect().then(() => {
+  app.listen(config.port, () => {
+    console.log(`App listening at http://localhost:${config.port}`);
   });
-} else {
-  console.log("Running in dev env");
-
-  connect().then(() => {
-    app.listen(config.port, () => {
-      console.log(`App listening at http://localhost:${config.port}`);
-    });
-  });
-}
+});
+// }

@@ -8,9 +8,9 @@ import {
   DialogTitle,
   TextField,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import { WithOpenClosedState } from "@typings/shared";
-import { EventsApi } from "@api/index";
+import { EventsApi } from "@api/eventsApi";
 import { EventManagerContext } from "@contexts/EventManagerContext";
 import { ColorResult, TwitterPicker } from "react-color";
 import { eventColors } from "@utilities/eventUtils";

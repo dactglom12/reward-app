@@ -7,7 +7,7 @@ docker_image_name="reward-app"
 # Function to obtain SSL certificate using Certbot
 function obtain_ssl_certificate() {
     echo "Obtaining SSL certificate for $domain_name ..."
-    sudo certbot certonly --standalone -d "$domain_name" --agree-tos -n -m dactglom.cloud@gmail.com
+    sudo certbot certonly --standalone -d "$domain_name" --agree-tos -n -m volmolchanov1998@gmail.com
 }
 
 # Function to check if SSL certificate needs renewal

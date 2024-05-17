@@ -9,7 +9,7 @@ export const baseAxiosClient = axios.create({
 baseAxiosClient.defaults.headers.common["credentials"] = "include";
 baseAxiosClient.defaults.headers.common[
   "Access-Control-Allow-Origin".toUpperCase()
-] = "http://www.waterproof-jule.online";
+] = "http://www.words-jule.online";
 
 // export * from "./eventsApi";
 // export * from "./authApi";

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Replace 'your_domain.com' with your actual domain name
-domain_name="www.waterproof-jule.online"
+domain_name="www.words-jule.online"
 docker_image_name="reward-app"
 
 # Function to obtain SSL certificate using Certbot

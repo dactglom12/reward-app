@@ -34,7 +34,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://www.waterproof-jule.online",
+      "https://www.words-jule.online",
       "http://localhost:3001",
     ],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],

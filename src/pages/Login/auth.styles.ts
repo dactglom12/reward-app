@@ -2,13 +2,6 @@ import { TextField, styled, Button as MuiButton } from "@mui/material";
 import { Colors } from "constants/styles";
 import { NavLink } from "react-router-dom";
 
-export const Title = styled("p")(({ theme }) => ({
-  letterSpacing: "-.025em",
-  fontWeight: 800,
-  fontSize: "2.4rem",
-  fontFamily: theme.typography.fontFamily,
-}));
-
 export const SubtitleSectionContainer = styled("div")(({ theme }) => ({
   display: "flex",
   width: "100%",

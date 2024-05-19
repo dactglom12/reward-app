@@ -1,17 +1,7 @@
 import React, { useState } from "react";
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  Container,
-  styled,
-  Box,
-} from "@mui/material";
-import { LockOutlined } from "@mui/icons-material";
+import { Button, TextField, styled, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "@routes/constants";
-import { AuthorSection } from "@components/AuthorSection";
 import { AuthApi } from "@api/authApi";
 import { AuthenticationContext } from "@contexts/AuthenticationContext";
 import { Card } from "@components/Card";
@@ -19,13 +9,8 @@ import {
   SignUpLink,
   Subtitle,
   SubtitleSectionContainer,
-  Title,
 } from "@pages/Login/auth.styles";
-
-const AvatarElement = styled(Avatar)(({ theme }) => ({
-  margin: theme.spacing(1),
-  backgroundColor: theme.palette.secondary.main,
-}));
+import { Title } from "@components/styled";
 
 const Form = styled("form")(({ theme }) => ({
   width: "100%", // Fix IE 11 issue.

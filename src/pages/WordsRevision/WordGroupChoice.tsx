@@ -23,6 +23,7 @@ import { WordGroupChartsSection } from "./WordGroupChartsSection";
 import { WordGroup } from "@typings/word";
 import { randomWordAmountOptions } from "./constants";
 import { useOpenCloseToggle } from "@hooks/useOpenCloseToggle";
+import { Title } from "@components/styled";
 
 interface WordGroupChoiceProps {
   chooseRandom: () => void;
@@ -52,12 +53,10 @@ export const WordGroupChoice: React.FC<WordGroupChoiceProps> = ({
   return (
     <Container>
       <Grid mb={2} container spacing={isMobile ? 2 : 0}>
-        <Grid item md={11} xs={6}>
-          <Typography variant={isMobile ? "h5" : "h4"}>
-            Choose word group
-          </Typography>
+        <Grid item md={11} xs={10}>
+          <Title>Select group</Title>
         </Grid>
-        <Grid item md={1} xs={6} justifyContent="flex-end" display="flex">
+        <Grid item md={1} xs={2} justifyContent="flex-end" display="flex">
           <UploadButton
             inputProps={{
               name: "words_csv",

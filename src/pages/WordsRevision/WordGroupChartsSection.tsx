@@ -1,4 +1,5 @@
 import { WordsApi } from "@api/wordsApi";
+import { Title } from "@components/styled";
 import { useRequest } from "@hooks/useRequest";
 import {
   Box,
@@ -155,7 +156,7 @@ export const WordGroupChartsSection: React.FC<WordGroupChartsSectionProps> = ({
     <Grid width="100%" height="400px">
       <Grid item container xs={12}>
         <Grid item xs={12} mb={2}>
-          <Typography variant="h4">Training session results</Typography>
+          <Title>Training session results</Title>
         </Grid>
         <Grid item xs={12} md={4}>
           <FormControl fullWidth>

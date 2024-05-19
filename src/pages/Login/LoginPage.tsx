@@ -10,9 +10,9 @@ import {
   SignUpLink,
   Subtitle,
   SubtitleSectionContainer,
-  Title,
 } from "./auth.styles";
 import { Box } from "@mui/material";
+import { Title } from "@components/styled";
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -54,7 +54,7 @@ export const LoginPage: React.FC = () => {
       <Card
         style={{ maxWidth: "460px", width: "100%", boxSizing: "border-box" }}
       >
-        <Title>Sign in</Title>
+        <Title>Log in</Title>
         <SubtitleSectionContainer>
           <Subtitle>Don't have an account yet?</Subtitle>
           <SignUpLink to={RoutePaths.SIGN_UP}>Create</SignUpLink>

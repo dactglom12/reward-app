@@ -69,6 +69,8 @@ streakCheckJob.start();
 
 if (isProdEnv()) {
   console.log("Running in prod env");
+  console.log("ENV: ");
+  console.log(process.env);
 
   const httpsOptions = {
     key: fs.readFileSync("/app/private_key.pem"),

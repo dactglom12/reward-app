@@ -17,7 +17,6 @@ import "@listeners/userListeners";
 import { isProdEnv } from "@utils/envUtils";
 import https from "https";
 import fs from "fs";
-import * as PlayHT from "playht";
 
 const loggerMiddleware = (req: Request, _res: Response, next: NextFunction) => {
   console.log(
@@ -68,34 +67,29 @@ app.use("/words", wordsRouter);
 
 streakCheckJob.start();
 
-// if (isProdEnv()) {
-//   console.log("Running in prod env");
+if (isProdEnv()) {
+  console.log("Running in prod env");
 
-//   const httpsOptions = {
-//     key: fs.readFileSync("/app/private_key.pem"),
-//     cert: fs.readFileSync("/app/certificate.pem"),
-//   };
+  const httpsOptions = {
+    key: fs.readFileSync("/app/private_key.pem"),
+    cert: fs.readFileSync("/app/certificate.pem"),
+  };
 
-//   const httpsPort = 443;
+  const httpsPort = 443;
 
-//   const server = https.createServer(httpsOptions, app);
+  const server = https.createServer(httpsOptions, app);
 
-//   connect().then(() => {
-//     server.listen(httpsPort, () => {
-//       console.log(`App listening at https port`);
-//     });
-//   });
-// } else {
-console.log("Running in dev env");
-
-// PlayHT.init({
-//   apiKey: config.textToSpeech.apiKey,
-//   userId: config.textToSpeech.userId,
-// });
-
-connect().then(() => {
-  app.listen(config.port, () => {
-    console.log(`App listening at http://localhost:${config.port}`);
+  connect().then(() => {
+    server.listen(httpsPort, () => {
+      console.log(`App listening at https port`);
+    });
   });
-});
-// }
+} else {
+  console.log("Running in dev env");
+
+  connect().then(() => {
+    app.listen(config.port, () => {
+      console.log(`App listening at http://localhost:${config.port}`);
+    });
+  });
+}

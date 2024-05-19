@@ -33,13 +33,11 @@ export const SignUpLink = styled(NavLink)(({ theme }) => ({
 
 export const InputContainer = styled(TextField)(({ theme }) => ({
   "& input": {
-    fontSize: "1.4rem !important",
     fontFamily: theme.typography.fontFamily,
     color: Colors.DARK_BLUE,
     cursor: "text",
   },
   "& label": {
-    fontSize: "1.2rem !important",
     fontFamily: theme.typography.fontFamily,
     color: Colors.DARK_BLUE,
     cursor: "text",

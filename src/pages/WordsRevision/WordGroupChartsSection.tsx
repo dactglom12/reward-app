@@ -106,6 +106,7 @@ export const WordGroupChartsSection: React.FC<WordGroupChartsSectionProps> = ({
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
+          textAlign="center"
         >
           <Typography variant="h4">Insufficient training data</Typography>
           <Typography variant="caption" fontSize="1.3rem">
@@ -153,7 +154,10 @@ export const WordGroupChartsSection: React.FC<WordGroupChartsSectionProps> = ({
   return (
     <Grid width="100%" height="400px">
       <Grid item container xs={12}>
-        <Grid item xs={4}>
+        <Grid item xs={12} mb={2}>
+          <Typography variant="h4">Training session results</Typography>
+        </Grid>
+        <Grid item xs={12} md={4}>
           <FormControl fullWidth>
             <InputLabel id="word-group-label">Word group</InputLabel>
             <Select

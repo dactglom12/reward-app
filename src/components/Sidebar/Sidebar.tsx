@@ -85,7 +85,7 @@ export const Sidebar: React.FC<Props> = ({ isOpen, onClose }) => {
       <Grid container>
         <UserInfoContainer item xs={12}>
           <Avatar>TBD</Avatar>
-          <UserTitle>Name Surname</UserTitle>
+          <UserTitle mt={2}>Name Surname</UserTitle>
           <UserEmail>example@gmail.com</UserEmail>
           <UserBalanceContainer>
             <UserBalanceBadge />
@@ -97,7 +97,7 @@ export const Sidebar: React.FC<Props> = ({ isOpen, onClose }) => {
           ))}
           <LinkGroup
             key="buttons-action-group"
-            title="Auth"
+            title="Actions"
             buttons={[{ Icon: ExitToApp, label: "Sign out", onClick: logout }]}
           />
         </LinkGroupsContainer>

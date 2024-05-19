@@ -12,6 +12,7 @@ import {
   SubtitleSectionContainer,
   Title,
 } from "./auth.styles";
+import { Box } from "@mui/material";
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -49,43 +50,47 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <Card style={{ width: "420px", boxSizing: "border-box" }}>
-      <Title>Sign in</Title>
-      <SubtitleSectionContainer>
-        <Subtitle>Don't have an account yet?</Subtitle>
-        <SignUpLink to={RoutePaths.SIGN_UP}>Sign up</SignUpLink>
-      </SubtitleSectionContainer>
-      <form onSubmit={handleSubmit}>
-        <InputContainer
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <InputContainer
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button type="submit" fullWidth variant="contained" color="primary">
-          Sign In
-        </Button>
-      </form>
-    </Card>
+    <Box padding={2}>
+      <Card
+        style={{ maxWidth: "460px", width: "100%", boxSizing: "border-box" }}
+      >
+        <Title>Sign in</Title>
+        <SubtitleSectionContainer>
+          <Subtitle>Don't have an account yet?</Subtitle>
+          <SignUpLink to={RoutePaths.SIGN_UP}>Create</SignUpLink>
+        </SubtitleSectionContainer>
+        <form onSubmit={handleSubmit}>
+          <InputContainer
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <InputContainer
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button type="submit" fullWidth variant="contained" color="primary">
+            Log in
+          </Button>
+        </form>
+      </Card>
+    </Box>
   );
 };

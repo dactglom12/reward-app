@@ -1,6 +1,5 @@
 import { HomePage } from "@pages/Home";
 import { RouteConfig } from ".";
-import { Mail, Inbox, VerifiedUser } from "@mui/icons-material";
 import { NotFoundPage } from "@pages/NotFound";
 import { LoginPage } from "@pages/Login";
 import { SignUpPage } from "@pages/SignUp";
@@ -8,6 +7,10 @@ import AwardsPage from "@pages/Award/AwardsPage";
 import { TasksPage } from "@pages/Tasks";
 import { LinkGroupIds } from "@components/Sidebar/types";
 import { WordsRevisionPage } from "@pages/WordsRevision";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import TranslateIcon from "@mui/icons-material/Translate";
 
 export enum RoutePaths {
   HOME = "/",
@@ -24,15 +27,15 @@ export const menuSpecificRoutes: RouteConfig[] = [
     path: RoutePaths.HOME,
     component: HomePage,
     // TODO: add route specific icons
-    Icon: Inbox,
-    menuTitle: "Recipes",
+    Icon: CalendarMonthIcon,
+    menuTitle: "Calendar",
     isProtected: true,
     groupId: LinkGroupIds.HOME,
   },
   {
     path: RoutePaths.AWARDS,
     component: AwardsPage,
-    Icon: Mail,
+    Icon: EmojiEventsIcon,
     menuTitle: "Awards",
     isProtected: true,
     groupId: LinkGroupIds.HOME,
@@ -40,8 +43,8 @@ export const menuSpecificRoutes: RouteConfig[] = [
   {
     path: RoutePaths.TASKS,
     component: TasksPage,
-    Icon: Mail,
-    menuTitle: "Tasks",
+    Icon: AssignmentTurnedInIcon,
+    menuTitle: "Challenges",
     isProtected: true,
     groupId: LinkGroupIds.HOME,
   },
@@ -57,7 +60,7 @@ export const menuSpecificRoutes: RouteConfig[] = [
   {
     path: RoutePaths.WORDS_REVISION,
     component: WordsRevisionPage,
-    Icon: VerifiedUser,
+    Icon: TranslateIcon,
     exact: true,
     isProtected: true,
     menuTitle: "Words",

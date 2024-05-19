@@ -20,12 +20,14 @@ const Container = styled(Box)({
   justifyContent: "space-between",
 });
 
-const ContentContainer = styled(Box, {
-  shouldForwardProp: (propName) => propName !== "isSidebarOpen",
-})<{ isSidebarOpen: boolean }>(({ theme, isSidebarOpen }) => ({
-  width: isSidebarOpen ? "calc(100% - 280px)" : "100%",
+const ContentContainer = styled(Box)(({ theme }) => ({
+  width: "calc(100% - 280px)",
   padding: theme.spacing(4),
   boxSizing: "border-box",
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(2),
+    width: "100%",
+  },
 }));
 
 export const RegularLayout: React.FC<Props> = ({ children }) => {
@@ -59,8 +61,8 @@ export const RegularLayout: React.FC<Props> = ({ children }) => {
         </IconButton>
       )}
       <Sidebar isOpen={isSidebarOpen} onClose={handleClose} />
-      <ContentContainer isSidebarOpen={isSidebarOpen}>
-        {isMobile && <Box sx={{ height: spacing(2), width: "100%" }} />}
+      <ContentContainer>
+        {isMobile && <Box sx={{ height: spacing(4), width: "100%" }} />}
         {children}
       </ContentContainer>
     </Container>

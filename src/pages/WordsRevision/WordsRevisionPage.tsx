@@ -6,11 +6,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   SelectChangeEvent,
   Typography,
   styled,
@@ -20,7 +15,6 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { WordsApi } from "@api/wordsApi";
 import { Word, WordGroup, WordTrainingSession } from "@typings/word";
-import { UploadButton } from "@components/UploadButton";
 import { WordCard } from "./WordCard";
 import { Swiper, SwiperSlide, SwiperClass } from "swiper/react";
 import "swiper/css";
@@ -28,8 +22,8 @@ import "swiper/css/navigation";
 import { Navigation, Keyboard } from "swiper/modules";
 import { KeyboardBackspace } from "@mui/icons-material";
 import { useOpenCloseToggle } from "@hooks/useOpenCloseToggle";
-import { WordGroupChartsSection } from "./WordGroupChartsSection";
-import { sortGroups } from "./utils";
+import { randomWordAmountOptions } from "./constants";
+import { WordGroupChoice } from "./WordGroupChoice";
 
 const TopContainer = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(2),
@@ -54,8 +48,6 @@ const LoaderWrapper = styled(Box)({
   justifyContent: "center",
   alignItems: "center",
 });
-
-const randomWordAmountOptions = [10, 15, 20, 25];
 
 export const WordsRevisionPage: React.FC = () => {
   const [words, setWords] = useState<Word[]>([]);
@@ -195,68 +187,14 @@ export const WordsRevisionPage: React.FC = () => {
 
   if (!wordGroup && !isRandomMode)
     return (
-      <Container>
-        <TopContainer>
-          <Typography variant="h4">Choose word group</Typography>
-          <UploadButton
-            inputProps={{
-              name: "words_csv",
-              id: "file-input",
-              accept: ".csv",
-            }}
-            uploadRequest={(files, onUploadProgress, onDownloadProgress) =>
-              WordsApi.uploadWords(
-                files[0],
-                onUploadProgress,
-                onDownloadProgress
-              )
-            }
-            onUploadSuccess={onUploadSuccess}
-          />
-        </TopContainer>
-        <Grid spacing={2} container>
-          <Grid container item xs={12} alignItems="flex-end">
-            <Grid item xs={2}>
-              <Button
-                onClick={chooseRandom}
-                variant="contained"
-                color="warning"
-              >
-                Random
-              </Button>
-            </Grid>
-            <Grid item xs={2}>
-              <FormControl fullWidth>
-                <InputLabel id="random-amount-label">
-                  How many random words
-                </InputLabel>
-                <Select
-                  labelId="random-amount-label"
-                  value={String(randomModeWordsAmount)}
-                  onChange={onRandomWordsSelectChange}
-                  label="How many random words"
-                >
-                  {randomWordAmountOptions.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-          {sortGroups(groups).map((group) => (
-            <Grid xs={12} md={6} item key={group._id}>
-              <Button variant="contained" onClick={() => chooseGroup(group)}>
-                {group.title}
-              </Button>
-            </Grid>
-          ))}
-        </Grid>
-        <Grid mt={5} item xs={12}>
-          {groups.length > 0 && <WordGroupChartsSection wordGroups={groups} />}
-        </Grid>
-      </Container>
+      <WordGroupChoice
+        chooseGroup={chooseGroup}
+        chooseRandom={chooseRandom}
+        groups={groups}
+        onRandomWordsSelectChange={onRandomWordsSelectChange}
+        onUploadSuccess={onUploadSuccess}
+        randomModeWordsAmount={randomModeWordsAmount}
+      />
     );
 
   if (isWordsLoading)
@@ -284,11 +222,11 @@ export const WordsRevisionPage: React.FC = () => {
         <Swiper
           grabCursor
           slidesPerView={isMobile ? 1 : 3}
-          spaceBetween={isMobile ? 10 : 30}
+          spaceBetween={isMobile ? 50 : 30}
           centeredSlides
           autoHeight
           initialSlide={currentWordIndex}
-          navigation
+          navigation={!isMobile}
           keyboard
           modules={[Navigation, Keyboard]}
           onActiveIndexChange={onActiveIndexChange}

@@ -12,7 +12,7 @@ export const UserBalanceBadge: React.FC = () => {
 
   return (
     <BadgeContainer>
-      <CoinsText>Your coins:</CoinsText>
+      <CoinsText>Coins:</CoinsText>
       <CoinIcon />
       <CoinsAmount>{isLoading ? "..." : balance}</CoinsAmount>
     </BadgeContainer>

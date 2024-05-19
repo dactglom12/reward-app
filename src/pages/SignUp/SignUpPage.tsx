@@ -4,24 +4,23 @@ import {
   Button,
   CssBaseline,
   TextField,
-  Grid,
-  Typography,
   Container,
   styled,
+  Box,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "@routes/constants";
 import { AuthorSection } from "@components/AuthorSection";
 import { AuthApi } from "@api/authApi";
 import { AuthenticationContext } from "@contexts/AuthenticationContext";
-
-const Paper = styled("div")(({ theme }) => ({
-  marginTop: theme.spacing(8),
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-}));
+import { Card } from "@components/Card";
+import {
+  SignUpLink,
+  Subtitle,
+  SubtitleSectionContainer,
+  Title,
+} from "@pages/Login/auth.styles";
 
 const AvatarElement = styled(Avatar)(({ theme }) => ({
   margin: theme.spacing(1),
@@ -71,15 +70,15 @@ export const SignUpPage: React.FC = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Paper>
-        <AvatarElement>
-          <LockOutlined />
-        </AvatarElement>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
+    <Box padding={2}>
+      <Card
+        style={{ maxWidth: "460px", width: "100%", boxSizing: "border-box" }}
+      >
+        <Title>Sign up</Title>
+        <SubtitleSectionContainer>
+          <Subtitle> Already have an account?</Subtitle>
+          <SignUpLink to={RoutePaths.LOGIN}>Log in</SignUpLink>
+        </SubtitleSectionContainer>
         <Form onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
@@ -143,18 +142,10 @@ export const SignUpPage: React.FC = () => {
             onChange={(e) => setLastName(e.target.value)}
           />
           <Submit type="submit" fullWidth variant="contained" color="primary">
-            Sign Up
+            Create account
           </Submit>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <NavLink to={RoutePaths.LOGIN}>
-                Already have an account? Sign in
-              </NavLink>
-            </Grid>
-          </Grid>
         </Form>
-      </Paper>
-      <AuthorSection />
-    </Container>
+      </Card>
+    </Box>
   );
 };

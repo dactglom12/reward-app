@@ -9,6 +9,7 @@ import {
 import { Sidebar } from "@components/Sidebar";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useOpenCloseToggle } from "@hooks/useOpenCloseToggle";
+import { useLocation } from "react-router-dom";
 
 interface Props {
   children: React.ReactNode;
@@ -35,6 +36,11 @@ export const RegularLayout: React.FC<Props> = ({ children }) => {
     handleOpen,
     handleClose,
   } = useOpenCloseToggle(isMobile ? false : true);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (isMobile) handleClose();
+  }, [location, handleClose, isMobile]);
 
   useEffect(() => {
     if (isSidebarOpen || isMobile) return;

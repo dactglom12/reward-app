@@ -2,7 +2,7 @@ import React from "react";
 // import { useTheme } from "@mui/material/styles";
 import Drawer from "@mui/material/Drawer";
 import { WithOpenClosedState } from "@typings/shared";
-import { Grid } from "@mui/material";
+import { Grid, IconButton, useMediaQuery, useTheme } from "@mui/material";
 import { menuSpecificRoutes } from "@routes/constants";
 import {
   Avatar,
@@ -19,6 +19,7 @@ import { ExitToApp } from "@mui/icons-material";
 import { AuthenticationContext } from "@contexts/AuthenticationContext";
 import { UserBalanceBadge } from "@components/UserBalanceBadge";
 import { Colors } from "constants/styles";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface Props extends WithOpenClosedState {}
 
@@ -48,8 +49,8 @@ const generateRouteGroups = (routes: RouteConfig[]) => {
 const routeGroups = generateRouteGroups(menuSpecificRoutes);
 
 export const Sidebar: React.FC<Props> = ({ isOpen, onClose }) => {
-  // const theme = useTheme();
-  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { breakpoints, spacing } = useTheme();
+  const isMobile = useMediaQuery(breakpoints.down("sm"));
   const { logout } = React.useContext(AuthenticationContext);
 
   return (
@@ -68,13 +69,19 @@ export const Sidebar: React.FC<Props> = ({ isOpen, onClose }) => {
         }),
       }}
     >
-      {/* {isMobile && (
-        <div className={classes.mobileClose}>
-          <IconButton color="inherit" onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        </div>
-      )} */}
+      {isMobile && (
+        <IconButton
+          sx={{
+            position: "absolute",
+            top: spacing(1),
+            right: spacing(1),
+            color: Colors.GREY,
+          }}
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      )}
       <Grid container>
         <UserInfoContainer item xs={12}>
           <Avatar>TBD</Avatar>

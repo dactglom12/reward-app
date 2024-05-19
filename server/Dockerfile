@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install app dependencies
-RUN yarn install
+RUN npm run install
 
 # Copy the rest of the application code to the container
 COPY . .
@@ -21,4 +21,4 @@ COPY ./ssl_certificates/mydomain.crt /app/certificate.pem
 COPY ./ssl_certificates/mydomain.key /app/private_key.pem
 
 # Start your Express app using HTTPS
-CMD ["yarn", "run" ,"start"]
+CMD ["npm", "run" ,"start"]

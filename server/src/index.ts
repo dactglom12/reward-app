@@ -88,7 +88,6 @@ if (isProdEnv()) {
   });
 } else {
   console.log("Running in dev env");
-
   connect().then(() => {
     app.listen(config.port, () => {
       console.log(`App listening at http://localhost:${config.port}`);

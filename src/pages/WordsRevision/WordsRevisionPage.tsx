@@ -14,6 +14,8 @@ import {
   SelectChangeEvent,
   Typography,
   styled,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { WordsApi } from "@api/wordsApi";
@@ -73,6 +75,8 @@ export const WordsRevisionPage: React.FC = () => {
   const [trainingSessionHash, setTrainingSessionHash] = useState<
     Record<string, boolean>
   >({});
+  const { breakpoints } = useTheme();
+  const isMobile = useMediaQuery(breakpoints.down("sm"));
 
   const correctWords = useMemo(
     () =>
@@ -279,8 +283,8 @@ export const WordsRevisionPage: React.FC = () => {
       <SceneContainer>
         <Swiper
           grabCursor
-          slidesPerView={3}
-          spaceBetween={30}
+          slidesPerView={isMobile ? 1 : 3}
+          spaceBetween={isMobile ? 10 : 30}
           centeredSlides
           autoHeight
           initialSlide={currentWordIndex}

@@ -55,7 +55,14 @@ export const WordGroupChoice: React.FC<WordGroupChoiceProps> = ({
         <Grid item md={11} xs={10}>
           <Title>Select group</Title>
         </Grid>
-        <Grid item md={1} xs={2} justifyContent="flex-end" display="flex">
+        <Grid
+          item
+          md={1}
+          xs={2}
+          justifyContent="flex-end"
+          alignItems="center"
+          display="flex"
+        >
           <UploadButton
             inputProps={{
               name: "words_csv",

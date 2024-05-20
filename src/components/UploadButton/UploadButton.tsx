@@ -1,5 +1,12 @@
 import React, { InputHTMLAttributes, useState } from "react";
-import { Box, Button, LinearProgress, Snackbar } from "@mui/material";
+import {
+  Box,
+  Button,
+  LinearProgress,
+  Snackbar,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { AxiosProgressEvent } from "axios";
 
@@ -20,6 +27,8 @@ export const UploadButton: React.FC<UploadButtonProps> = ({
   inputProps,
   onUploadSuccess,
 }) => {
+  const { breakpoints } = useTheme();
+  const isMobile = useMediaQuery(breakpoints.down("sm"));
   const [requestProgress, setRequestProgress] = useState(0);
   const [uploadState, setUploadState] = useState<
     "idle" | "in-progress" | "success" | "failure"
@@ -82,8 +91,17 @@ export const UploadButton: React.FC<UploadButtonProps> = ({
         variant="contained"
         tabIndex={-1}
         startIcon={<CloudUploadIcon />}
+        sx={
+          isMobile
+            ? {
+                ".MuiButton-icon": {
+                  marginRight: "0",
+                },
+              }
+            : {}
+        }
       >
-        Upload
+        {!isMobile && "Upload"}
         <input
           {...inputProps}
           style={{ display: "none" }}

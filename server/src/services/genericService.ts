@@ -20,4 +20,8 @@ export abstract class GenericService<T> {
   async getAllBy(fields: Partial<T>) {
     return this.model.find({ ...fields });
   }
+
+  async updateById(id: string, fields: Partial<T>) {
+    return this.model.findByIdAndUpdate(id, { ...fields }, { new: true });
+  }
 }

@@ -80,6 +80,12 @@ class WordsApi {
 
     return baseAxiosClient.get(`${subroute}/training-session/${dto.groupId}`);
   }
+
+  static async updateWord(
+    word: Required<Pick<Word, "_id">> & Partial<Word>
+  ): Promise<AxiosResponse<{ word: Word }>> {
+    return baseAxiosClient.put(`${subroute}/${word._id}`, word);
+  }
 }
 
 export { WordsApi };

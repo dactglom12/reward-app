@@ -2,17 +2,12 @@ import { Word, WordModel } from "@models/wordModel";
 import { TranslationService } from "./translationService";
 import { TextToSpeechService } from "./textToSpeechService";
 import { ImageSearchService } from "./imageSearchService";
+import { GenericService } from "./genericService";
 
-class WordService {
-  static async getAllWords() {
-    return WordModel.find();
-  }
+class WordInnerService extends GenericService<Word> {
+  model = WordModel;
 
-  static async getAllWordsByGroup(group: string) {
-    return WordModel.find({ group });
-  }
-
-  static async create(partial: Pick<Word, "native" | "group">) {
+  async generateWord(partial: Pick<Word, "native" | "group">) {
     const translation = await TranslationService.translate(
       partial.native,
       "en",
@@ -32,4 +27,4 @@ class WordService {
   }
 }
 
-export { WordService };
+export const WordService = new WordInnerService();

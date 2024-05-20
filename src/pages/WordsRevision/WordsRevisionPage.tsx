@@ -185,6 +185,16 @@ export const WordsRevisionPage: React.FC = () => {
     setRandomModeWordsAmount(Number(event.target.value));
   };
 
+  const onWordUpdate = (updatedWord: Word) => {
+    setWords((words) =>
+      words.map((word) => {
+        if (word._id === updatedWord._id) return { ...word, ...updatedWord };
+
+        return word;
+      })
+    );
+  };
+
   if (!wordGroup && !isRandomMode)
     return (
       <WordGroupChoice
@@ -234,7 +244,13 @@ export const WordsRevisionPage: React.FC = () => {
           {words.map((word) => (
             <SwiperSlide key={word._id}>
               {() => {
-                return <WordCard word={word} onGuessChoice={onGuessChoice} />;
+                return (
+                  <WordCard
+                    word={word}
+                    onWordUpdate={onWordUpdate}
+                    onGuessChoice={onGuessChoice}
+                  />
+                );
               }}
             </SwiperSlide>
           ))}

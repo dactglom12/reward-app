@@ -55,7 +55,7 @@ router.post(
       const { words, groups } = parseFile(req.file);
 
       const wordsGenerationPromises = words.map((word) =>
-        WordService.create(word)
+        WordService.generateWord(word)
       );
       const categoriesGenerationPromises = groups.map((groupTitle) =>
         WordGroupService.create({ title: groupTitle })
@@ -102,6 +102,19 @@ router.post(
   }
 );
 
+router.put("/:wordId", verifyTokenMiddleware, async (req, res) => {
+  try {
+    const updatedWord = await WordService.updateById(
+      req.params.wordId,
+      req.body
+    );
+
+    return res.json({ word: updatedWord });
+  } catch (error) {
+    return res.json({ error: (error as { message: string }).message });
+  }
+});
+
 router.get("/", verifyTokenMiddleware, async (req, res) => {
   try {
     const isByGroup = Object.prototype.hasOwnProperty.call(req.query, "group");
@@ -110,12 +123,12 @@ router.get("/", verifyTokenMiddleware, async (req, res) => {
     let words: Word[];
 
     if (isByGroup) {
-      words = await WordService.getAllWordsByGroup(req.query.group as string);
+      words = await WordService.getAllBy({ group: req.query.group as string });
     } else if (isRandom && typeof req.query.amount === "string") {
-      const allWords = await WordService.getAllWords();
+      const allWords = await WordService.getAll();
       words = getRandomElements<Word>(allWords, Number(req.query.amount));
     } else {
-      words = await WordService.getAllWords();
+      words = await WordService.getAll();
     }
 
     return res.json({ words });

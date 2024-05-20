@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import "./path-config";
 import { config } from "./env-config";
 import { connect } from "@db/connect";
-import eventsRouter from "@routes/events";
+import calendarRouter from "@routes/calendar";
 import authenticationRouter from "@routes/authentication";
 import awardsRouter from "@routes/awards";
 import balanceRouter from "@routes/balance";
@@ -57,7 +57,7 @@ app.use(cookieParser());
 
 app.use(loggerMiddleware);
 
-app.use("/events", eventsRouter);
+app.use("/calendar", calendarRouter);
 app.use("/authentication", authenticationRouter);
 app.use("/awards", awardsRouter);
 app.use("/balance", balanceRouter);

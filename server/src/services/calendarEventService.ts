@@ -1,14 +1,14 @@
-import { Event, EventModel } from "@models/eventModel";
+import { CalendarEventModel, CalendarEvent } from "@models/calendarEventModel";
 
 interface GetAllEventsParams {
   startDate?: Date;
   endDate?: Date;
 }
 
-class EventService {
-  static async createEvent(eventData: Partial<Event>) {
+class CalendarEventService {
+  static async createEvent(eventData: Partial<CalendarEvent>) {
     try {
-      const event = new EventModel(eventData);
+      const event = new CalendarEventModel(eventData);
       const savedEvent = await event.save({});
       return savedEvent;
     } catch (err) {
@@ -23,7 +23,7 @@ class EventService {
           ? { date: { $gte: startDate, $lte: endDate } }
           : { date: null };
 
-      const events = await EventModel.find(params);
+      const events = await CalendarEventModel.find(params);
 
       return events;
     } catch (err) {
@@ -31,9 +31,9 @@ class EventService {
     }
   }
 
-  static async updateEvent(id: string, updatedFields: Partial<Event>) {
+  static async updateEvent(id: string, updatedFields: Partial<CalendarEvent>) {
     try {
-      const updatedEvent = await EventModel.findByIdAndUpdate(
+      const updatedEvent = await CalendarEventModel.findByIdAndUpdate(
         id,
         updatedFields,
         {
@@ -48,4 +48,4 @@ class EventService {
   }
 }
 
-export { EventService };
+export { CalendarEventService };

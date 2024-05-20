@@ -1,10 +1,21 @@
-import { WithDBId, WithTimestamps } from "./shared";
+import { WithDBId, WithTimestamps, WithUserId } from "./shared";
 
-export type Event = {
+export enum CalendarEventTypes {
+  WORD_TRAINING_SESSION = "word_training_session",
+  REGULAR = "regular",
+}
+
+export type CalendarEvent = {
   date?: Date;
   title: string;
   color: string;
+  content?: string;
+  eventType: CalendarEventTypes;
 } & WithTimestamps &
-  WithDBId;
+  WithDBId &
+  WithUserId;
 
-export type EventDto = Pick<Event, "date" | "title" | "color">;
+export type CalendarEventDto = Pick<
+  CalendarEvent,
+  "date" | "title" | "color" | "content" | "eventType"
+>;

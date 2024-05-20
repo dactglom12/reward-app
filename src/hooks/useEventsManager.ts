@@ -1,16 +1,16 @@
 import * as React from "react";
-import { Event } from "@typings/event";
+import { CalendarEvent } from "@typings/event";
 
 export const useEventsManager = () => {
-  const [events, setEvents] = React.useState<Event[]>([]);
+  const [events, setEvents] = React.useState<CalendarEvent[]>([]);
 
   const getEvent = React.useCallback(
-    (id: Event["_id"]) => events.find((event) => event._id === id),
+    (id: CalendarEvent["_id"]) => events.find((event) => event._id === id),
     [events]
   );
 
   const updateEvent = React.useCallback(
-    (id: Event["_id"], updatedFields: Partial<Event>) => {
+    (id: CalendarEvent["_id"], updatedFields: Partial<CalendarEvent>) => {
       setEvents((currentEvents) =>
         currentEvents.map((currentEvent) => {
           if (currentEvent._id === id)
@@ -23,7 +23,7 @@ export const useEventsManager = () => {
     []
   );
 
-  const addEvents = React.useCallback((events: Event[]) => {
+  const addEvents = React.useCallback((events: CalendarEvent[]) => {
     setEvents((currentEvents) => {
       const newEvents = events.filter((event) => {
         return !Boolean(

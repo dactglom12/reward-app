@@ -6,13 +6,13 @@ import { Box, Grid, List } from "@mui/material";
 import { ItemTypes } from "@typings/dragAndDrop";
 import { getUnassignedEvents } from "@utilities/eventUtils";
 import * as React from "react";
-import { EventsApi } from "@api/eventsApi";
+import { CalendarApi } from "@api/calendarApi";
 
 export const LeftPanel: React.FC = () => {
   const { events, addEvents } = React.useContext(EventManagerContext);
 
   React.useEffect(() => {
-    EventsApi.getAllEvents({})
+    CalendarApi.getAllEvents({})
       .then((response) => {
         addEvents(response.data.events);
       })

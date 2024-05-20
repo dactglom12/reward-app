@@ -30,6 +30,14 @@ export const CalendarContainer = styled(Box)(({ theme }) => ({
     fontWeight: "500 !important",
     fontFamily: theme.typography.fontFamily,
   },
+  ".rbc-event": {
+    padding: "4px",
+    borderRadius: "4px",
+    fontFamily: theme.typography.fontFamily,
+    fontStyle: "italic",
+    margin: "2px auto 0 auto",
+    width: "95%",
+  },
 }));
 
 export const ToolbarContainer = styled(Box)(({ theme }) => ({

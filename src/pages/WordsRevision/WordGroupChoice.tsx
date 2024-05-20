@@ -13,7 +13,6 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";

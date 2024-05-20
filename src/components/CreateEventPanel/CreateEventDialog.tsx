@@ -10,11 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 import { WithOpenClosedState } from "@typings/shared";
-import { EventsApi } from "@api/eventsApi";
+import { CalendarApi } from "@api/calendarApi";
 import { EventManagerContext } from "@contexts/EventManagerContext";
 import { ColorResult, TwitterPicker } from "react-color";
 import { eventColors } from "@utilities/eventUtils";
 import { EventCard } from "@components/EventCard";
+import { CalendarEventTypes } from "@typings/event";
 
 interface CreateEventDialogProps extends WithOpenClosedState {}
 
@@ -35,10 +36,10 @@ export const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   };
 
   const handleSave = () => {
-    // Do something with the form data
-    EventsApi.createEvent({
+    CalendarApi.createEvent({
       color,
       title,
+      eventType: CalendarEventTypes.REGULAR,
     })
       .then((response) => {
         addEvents([response.data.event]);
@@ -87,6 +88,8 @@ export const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
               title: title,
               createdAt: "",
               updatedAt: "",
+              userId: "",
+              eventType: CalendarEventTypes.REGULAR,
             }}
           />
         </Box>

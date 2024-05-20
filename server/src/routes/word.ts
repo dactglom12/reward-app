@@ -6,6 +6,10 @@ import { Router } from "express";
 import multer from "multer";
 import { parse } from "csv-parse/sync";
 import { getRandomElements } from "@utils/arrayUtils";
+import { verifyTokenMiddleware } from "@middlewares/auth";
+import { CalendarEventService } from "@services/calendarEventService";
+import { Colors } from "@constants/client-sync";
+import { CalendarEventTypes } from "@models/calendarEventModel";
 
 const router = Router();
 const upload = multer();
@@ -40,60 +44,65 @@ const parseFile = (
   };
 };
 
-router.post("/", upload.single("words_csv"), async (req, res) => {
-  try {
-    if (!req.file) throw new Error("File is required");
+router.post(
+  "/",
+  verifyTokenMiddleware,
+  upload.single("words_csv"),
+  async (req, res) => {
+    try {
+      if (!req.file) throw new Error("File is required");
 
-    const { words, groups } = parseFile(req.file);
+      const { words, groups } = parseFile(req.file);
 
-    const wordsGenerationPromises = words.map((word) =>
-      WordService.create(word)
-    );
-    const categoriesGenerationPromises = groups.map((groupTitle) =>
-      WordGroupService.create({ title: groupTitle })
-    );
+      const wordsGenerationPromises = words.map((word) =>
+        WordService.create(word)
+      );
+      const categoriesGenerationPromises = groups.map((groupTitle) =>
+        WordGroupService.create({ title: groupTitle })
+      );
 
-    const wordResults = await Promise.allSettled(wordsGenerationPromises);
-    const categoriesResults = await Promise.allSettled(
-      categoriesGenerationPromises
-    );
+      const wordResults = await Promise.allSettled(wordsGenerationPromises);
+      const categoriesResults = await Promise.allSettled(
+        categoriesGenerationPromises
+      );
 
-    return res.json({
-      wordResults: wordResults.map((settledResult, index) => {
-        const respectiveWord = words[index];
+      return res.json({
+        wordResults: wordResults.map((settledResult, index) => {
+          const respectiveWord = words[index];
 
-        if (settledResult.status === "rejected") {
-          console.log(settledResult.reason);
-        }
+          if (settledResult.status === "rejected") {
+            console.log(settledResult.reason);
+          }
 
-        return {
-          word: respectiveWord,
-          failed: settledResult.status === "rejected",
-          error:
-            settledResult.status === "rejected" ? settledResult.reason : null,
-        };
-      }),
-      categoriesResults: categoriesResults.map((settledResult, index) => {
-        const respectiveWordGroup = groups[index];
+          return {
+            word: respectiveWord,
+            failed: settledResult.status === "rejected",
+            error:
+              settledResult.status === "rejected" ? settledResult.reason : null,
+          };
+        }),
+        categoriesResults: categoriesResults.map((settledResult, index) => {
+          const respectiveWordGroup = groups[index];
 
-        if (settledResult.status === "rejected") {
-          console.log(settledResult.reason);
-        }
+          if (settledResult.status === "rejected") {
+            console.log(settledResult.reason);
+          }
 
-        return {
-          group: respectiveWordGroup,
-          failed: settledResult.status === "rejected",
-          error:
-            settledResult.status === "rejected" ? settledResult.reason : null,
-        };
-      }),
-    });
-  } catch (error) {
-    return res.json({ error: (error as { message: string }).message });
+          return {
+            group: respectiveWordGroup,
+            failed: settledResult.status === "rejected",
+            error:
+              settledResult.status === "rejected" ? settledResult.reason : null,
+          };
+        }),
+      });
+    } catch (error) {
+      return res.json({ error: (error as { message: string }).message });
+    }
   }
-});
+);
 
-router.get("/", async (req, res) => {
+router.get("/", verifyTokenMiddleware, async (req, res) => {
   try {
     const isByGroup = Object.prototype.hasOwnProperty.call(req.query, "group");
     const isRandom = Object.prototype.hasOwnProperty.call(req.query, "random");
@@ -113,7 +122,7 @@ router.get("/", async (req, res) => {
   } catch (error) {}
 });
 
-router.get("/groups", async (_req, res) => {
+router.get("/groups", verifyTokenMiddleware, async (_req, res) => {
   try {
     const wordGroups = await WordGroupService.getAll();
 
@@ -123,26 +132,49 @@ router.get("/groups", async (_req, res) => {
   }
 });
 
-router.post("/training-session", async (req, res) => {
+router.post("/training-session", verifyTokenMiddleware, async (req, res) => {
   try {
-    const newSession = await WordTrainingSessionService.create(req.body);
+    // TODO: bring better typing here
+    const userId = (req as unknown as { user: { userId: string } }).user.userId;
+    const newSession = await WordTrainingSessionService.create({
+      ...req.body,
+      userId,
+    });
+    const newCalendarEvent = await CalendarEventService.createEvent({
+      color: Colors.LIGHT_GREY,
+      title: `Training: ${req.body.group.title}`,
+      content: `${req.body.correctAnswersCount} correct answers out of ${req.body.wordsCount} words`,
+      date: new Date(),
+      userId,
+      eventType: CalendarEventTypes.WORD_TRAINING_SESSION,
+    });
 
-    return res.status(201).json({ session: newSession });
+    return res
+      .status(201)
+      .json({ session: newSession, calendarEvent: newCalendarEvent });
   } catch (error) {
     return res.json({ error: (error as { message: string }).message });
   }
 });
 
-router.get("/training-session/:groupId", async (req, res) => {
-  try {
-    const trainingSessions = await WordTrainingSessionService.getAllByGroupId(
-      req.params.groupId
-    );
+router.get(
+  "/training-session/:groupId",
+  verifyTokenMiddleware,
+  async (req, res) => {
+    try {
+      const userId = (req as unknown as { user: { userId: string } }).user
+        .userId;
+      const trainingSessions =
+        await WordTrainingSessionService.getAllByGroupIdAndUserId(
+          req.params.groupId,
+          userId
+        );
 
-    return res.json({ sessions: trainingSessions });
-  } catch (error) {
-    return res.json({ error: (error as { message: string }).message });
+      return res.json({ sessions: trainingSessions });
+    } catch (error) {
+      return res.json({ error: (error as { message: string }).message });
+    }
   }
-});
+);
 
 export default router;

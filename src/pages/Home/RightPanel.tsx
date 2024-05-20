@@ -1,18 +1,27 @@
 import { Calendar } from "@components/Calendar";
 import { DroppableWrapper } from "@components/DroppableWrapper";
 import { EventManagerContext } from "@contexts/EventManagerContext";
-import { Grid } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { ItemTypes } from "@typings/dragAndDrop";
 import * as React from "react";
 import { Views } from "react-big-calendar";
 import { DropTargetMonitor } from "react-dnd";
-import { Event } from "@typings/event";
+import { CalendarEvent, CalendarEventTypes } from "@typings/event";
 import { useDateRangeManager } from "@hooks/useDateRangeManager";
 import { DraggableWrapper } from "@components/DraggableWrapper";
 import { getAssignedEvents, transform } from "@utilities/eventUtils";
 import { startOfMonth, endOfMonth } from "date-fns";
-import { EventsApi } from "@api/eventsApi";
+import { CalendarApi } from "@api/calendarApi";
 import { DateCellContainer } from "@components/Calendar/calendar.styles";
+import { useOpenCloseToggle } from "@hooks/useOpenCloseToggle";
 
 const DROPPABLE_CLASSNAME = `droppable-day-wrapper`;
 
@@ -21,9 +30,15 @@ export const RightPanel: React.FC = () => {
     React.useContext(EventManagerContext);
   const { startDate: currentDate, handleStartDateChange: handleDateChange } =
     useDateRangeManager();
+  const {
+    isOpen: isSelectedEventDialogOpen,
+    handleOpen,
+    handleClose,
+  } = useOpenCloseToggle();
+  const [selectedEvent, setSelectedEvent] = React.useState<CalendarEvent>();
 
   React.useEffect(() => {
-    EventsApi.getAllEvents({
+    CalendarApi.getAllEvents({
       startDate: startOfMonth(currentDate),
       endDate: endOfMonth(currentDate),
     })
@@ -55,11 +70,11 @@ export const RightPanel: React.FC = () => {
 
     if (!dateAttribute) return;
 
-    const eventItem = item as Event;
+    const eventItem = item as CalendarEvent;
 
     const newEventDate = new Date(dateAttribute);
 
-    EventsApi.updateEvent(eventItem._id, { date: newEventDate })
+    CalendarApi.updateEvent(eventItem._id, { date: newEventDate })
       .then((response) => {
         updateEvent(eventItem._id, response.data.updatedEvent);
       })
@@ -69,57 +84,94 @@ export const RightPanel: React.FC = () => {
       });
   };
 
-  return (
-    <Grid item>
-      <DroppableWrapper
-        onDrop={handleDropAppEvent}
-        acceptItemType={ItemTypes.EVENT}
-      >
-        <Calendar
-          style={{
-            minHeight: "80vh",
-          }}
-          date={currentDate}
-          onNavigate={(newDate) => {
-            handleDateChange(newDate);
-          }}
-          views={[Views.MONTH]}
-          eventPropGetter={(event) => {
-            return {
-              style: {
-                backgroundColor: (event as any).entity.color,
-              },
-            };
-          }}
-          components={{
-            dateCellWrapper: ({ children, value }) => {
-              return (
-                <DateCellContainer
-                  data-value={value}
-                  style={{
-                    width: "calc(100% / 7)",
-                  }}
-                  className={`${DROPPABLE_CLASSNAME}`}
-                >
-                  {children}
-                </DateCellContainer>
-              );
-            },
+  // TODO: bring typing
+  const onSelectEvent: any = (event: { entity: CalendarEvent }) => {
+    setSelectedEvent(event.entity);
+    handleOpen();
+  };
 
-            eventWrapper: (props) => {
-              return (
-                <DraggableWrapper
-                  item={(props.event as any).entity}
-                  itemType={ItemTypes.EVENT}
-                >
-                  <div {...props} />
-                </DraggableWrapper>
-              );
-            },
-          }}
-          events={transform(getAssignedEvents(events))}
-        />
-      </DroppableWrapper>
-    </Grid>
+  return (
+    <>
+      <Grid item>
+        <DroppableWrapper
+          onDrop={handleDropAppEvent}
+          acceptItemType={ItemTypes.EVENT}
+        >
+          <Calendar
+            style={{
+              minHeight: "80vh",
+            }}
+            date={currentDate}
+            onNavigate={(newDate) => {
+              handleDateChange(newDate);
+            }}
+            views={[Views.MONTH]}
+            eventPropGetter={(event) => {
+              return {
+                style: {
+                  backgroundColor: (event as any).entity.color,
+                },
+              };
+            }}
+            onSelectEvent={onSelectEvent}
+            components={{
+              dateCellWrapper: ({ children, value }) => {
+                return (
+                  <DateCellContainer
+                    data-value={value}
+                    style={{
+                      width: "calc(100% / 7)",
+                    }}
+                    className={`${DROPPABLE_CLASSNAME}`}
+                  >
+                    {children}
+                  </DateCellContainer>
+                );
+              },
+
+              eventWrapper: (props) => {
+                if (
+                  (props.event as { entity: CalendarEvent }).entity
+                    .eventType === CalendarEventTypes.WORD_TRAINING_SESSION
+                )
+                  return <div {...props} />;
+
+                return (
+                  <DraggableWrapper
+                    item={(props.event as any).entity}
+                    itemType={ItemTypes.EVENT}
+                  >
+                    <div {...props} />
+                  </DraggableWrapper>
+                );
+              },
+            }}
+            events={transform(getAssignedEvents(events))}
+          />
+        </DroppableWrapper>
+      </Grid>
+      <Dialog
+        PaperProps={{
+          sx: {
+            padding: 1,
+          },
+        }}
+        open={isSelectedEventDialogOpen}
+        onClose={handleClose}
+      >
+        <DialogTitle>Event information</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">{selectedEvent?.title}</Typography>
+          {selectedEvent?.content && (
+            <Typography variant="body1">{selectedEvent?.content}</Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="info" onClick={handleClose}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };

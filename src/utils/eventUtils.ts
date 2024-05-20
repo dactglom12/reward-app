@@ -1,11 +1,11 @@
-import { Event } from "@typings/event";
+import { CalendarEvent } from "@typings/event";
 
-const getAssignedEvents = (events: Event[]) =>
+const getAssignedEvents = (events: CalendarEvent[]) =>
   events.filter((event) => !!event.date);
-const getUnassignedEvents = (events: Event[]) =>
+const getUnassignedEvents = (events: CalendarEvent[]) =>
   events.filter((event) => !event.date);
 
-const transform = (events: Event[]) =>
+const transform = (events: CalendarEvent[]) =>
   events
     .filter((event) => !!event.date)
     .map((event) => ({

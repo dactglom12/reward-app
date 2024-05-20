@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { EventService } from "@services/eventService";
+import { CalendarEventService } from "@services/calendarEventService";
 
 type ErrorLike = {
   message: string;
@@ -7,12 +7,16 @@ type ErrorLike = {
 
 const isValidDate = (d: Date) => !isNaN(d.getTime());
 
-class EventController {
+class CalendarController {
   static async create(req: Request, res: Response) {
     try {
       const { date, title, color } = req.body;
 
-      const savedEvent = await EventService.createEvent({ date, title, color });
+      const savedEvent = await CalendarEventService.createEvent({
+        date,
+        title,
+        color,
+      });
 
       return res.json({ event: savedEvent });
     } catch (err) {
@@ -27,7 +31,7 @@ class EventController {
       const startDate = new Date(req.query["start-date"] as string);
       const endDate = new Date(req.query["end-date"] as string);
 
-      const events = await EventService.getAllEvents({
+      const events = await CalendarEventService.getAllEvents({
         endDate: isValidDate(endDate) ? endDate : undefined,
         startDate: isValidDate(startDate) ? startDate : undefined,
       });
@@ -44,7 +48,7 @@ class EventController {
     try {
       const { id } = req.params;
 
-      const updatedEvent = await EventService.updateEvent(id, req.body);
+      const updatedEvent = await CalendarEventService.updateEvent(id, req.body);
 
       return res.json({ updatedEvent });
     } catch (err) {
@@ -55,4 +59,4 @@ class EventController {
   }
 }
 
-export { EventController };
+export { CalendarController };

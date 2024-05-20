@@ -14,6 +14,10 @@ export interface WithDBId {
   _id: string;
 }
 
+export interface WithUserId {
+  userId: string;
+}
+
 export interface WithReactChildren {
   children: React.ReactNode;
 }

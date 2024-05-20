@@ -1,11 +1,11 @@
 import { styled, Typography, useTheme } from "@mui/material";
-import { Event } from "@typings/event";
+import { CalendarEvent } from "@typings/event";
 import * as React from "react";
 import { EventNote } from "@mui/icons-material";
 import { isColorBright } from "@utilities/eventUtils";
 
 interface EventCardProps {
-  event: Event;
+  event: CalendarEvent;
 }
 
 const Wrapper = styled("div")(({ theme }) => ({
@@ -25,6 +25,13 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
       <Typography style={{ color: contentColor, marginLeft: theme.spacing(1) }}>
         {event.title}
       </Typography>
+      {event.content && (
+        <Typography
+          style={{ color: contentColor, marginLeft: theme.spacing(1) }}
+        >
+          {event.content}
+        </Typography>
+      )}
     </Wrapper>
   );
 };

@@ -1,26 +1,26 @@
-import { Event, EventDto } from "@typings/event";
+import { CalendarEvent, CalendarEventDto } from "@typings/event";
 import { getApiCompatibleDate } from "@utilities/dateUtils";
 import { AxiosResponse } from "axios";
 import { baseAxiosClient } from ".";
 
-const subroute = "/events";
+const subroute = "/calendar";
 
 interface GetAllEventsParams {
   startDate?: Date;
   endDate?: Date;
 }
 
-export class EventsApi {
+export class CalendarApi {
   static async createEvent(
-    dto: EventDto
-  ): Promise<AxiosResponse<{ event: Event }>> {
+    dto: CalendarEventDto
+  ): Promise<AxiosResponse<{ event: CalendarEvent }>> {
     return baseAxiosClient.post(`${subroute}/`, dto);
   }
 
   static async getAllEvents({
     startDate,
     endDate,
-  }: GetAllEventsParams): Promise<AxiosResponse<{ events: Event[] }>> {
+  }: GetAllEventsParams): Promise<AxiosResponse<{ events: CalendarEvent[] }>> {
     let start, end;
 
     if (startDate) {
@@ -50,8 +50,8 @@ export class EventsApi {
 
   static async updateEvent(
     id: string,
-    updatedFields: Partial<EventDto>
-  ): Promise<AxiosResponse<{ updatedEvent: Event }>> {
+    updatedFields: Partial<CalendarEventDto>
+  ): Promise<AxiosResponse<{ updatedEvent: CalendarEvent }>> {
     return baseAxiosClient.put(`${subroute}/${id}`, updatedFields);
   }
 }

@@ -6,6 +6,7 @@ type WordTrainingSession = {
   wordsCount: number;
   group: WordGroup;
   correctAnswersCount: number;
+  userId: string;
 } & WithDBId &
   WithTimestamps;
 
@@ -14,6 +15,10 @@ const wordTrainingSessionSchema = new mongoose.Schema<WordTrainingSession>(
     correctAnswersCount: Number,
     wordsCount: Number,
     group: getWordGroupSchema(false),
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

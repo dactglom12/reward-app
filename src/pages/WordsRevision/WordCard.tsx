@@ -8,7 +8,7 @@ import {
   styled,
 } from "@mui/material";
 import { Word } from "@typings/word";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { VolumeUp } from "@mui/icons-material";
 import { Colors } from "constants/styles";
 import CheckIcon from "@mui/icons-material/Check";
@@ -72,19 +72,17 @@ const CardWrapper = styled(Box)({
 export const WordCard: React.FC<WordCardProps> = ({ word, onGuessChoice }) => {
   const [isRightGuess, setIsRightGuess] = useState<boolean>();
 
-  const audio = useMemo(() => {
-    return new Audio(`data:audio/ogg;base64,${word.audio}`);
-  }, [word]);
-
   const handleSoundClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.stopPropagation();
 
-    if (!audio) return;
-
+    const audio = new Audio(`data:audio/ogg;base64,${word.audio}`);
     audio.currentTime = 0;
-    audio.play();
+    audio.play().catch((error) => {
+      alert(`Error playing audio: ${error} ${error.message}`);
+      console.error("Error playing audio:", error);
+    });
   };
 
   const isRight = () => typeof isRightGuess === "boolean" && isRightGuess;

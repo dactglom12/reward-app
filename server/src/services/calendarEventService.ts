@@ -3,6 +3,7 @@ import { CalendarEventModel, CalendarEvent } from "@models/calendarEventModel";
 interface GetAllEventsParams {
   startDate?: Date;
   endDate?: Date;
+  userId: string;
 }
 
 class CalendarEventService {
@@ -16,14 +17,18 @@ class CalendarEventService {
     }
   }
 
-  static async getAllEvents({ startDate, endDate }: GetAllEventsParams) {
+  static async getAllEvents({
+    startDate,
+    endDate,
+    userId,
+  }: GetAllEventsParams) {
     try {
       const params =
         startDate && endDate
           ? { date: { $gte: startDate, $lte: endDate } }
           : { date: null };
 
-      const events = await CalendarEventModel.find(params);
+      const events = await CalendarEventModel.find({ ...params, userId });
 
       return events;
     } catch (err) {

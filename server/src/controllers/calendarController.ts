@@ -30,10 +30,14 @@ class CalendarController {
     try {
       const startDate = new Date(req.query["start-date"] as string);
       const endDate = new Date(req.query["end-date"] as string);
+      // TODO: bring better typing here
+      const userId = (req as unknown as { user: { userId: string } }).user
+        .userId;
 
       const events = await CalendarEventService.getAllEvents({
         endDate: isValidDate(endDate) ? endDate : undefined,
         startDate: isValidDate(startDate) ? startDate : undefined,
+        userId,
       });
 
       return res.json({ events });

@@ -2,12 +2,14 @@ import { Calendar } from "@components/Calendar";
 import { DroppableWrapper } from "@components/DroppableWrapper";
 import { EventManagerContext } from "@contexts/EventManagerContext";
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Grid,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import { ItemTypes } from "@typings/dragAndDrop";
@@ -18,10 +20,12 @@ import { CalendarEvent, CalendarEventTypes } from "@typings/event";
 import { useDateRangeManager } from "@hooks/useDateRangeManager";
 import { DraggableWrapper } from "@components/DraggableWrapper";
 import { getAssignedEvents, transform } from "@utilities/eventUtils";
-import { startOfMonth, endOfMonth } from "date-fns";
+import { startOfMonth, endOfMonth, startOfDay, addDays } from "date-fns";
 import { CalendarApi } from "@api/calendarApi";
 import { DateCellContainer } from "@components/Calendar/calendar.styles";
 import { useOpenCloseToggle } from "@hooks/useOpenCloseToggle";
+import { useRequest } from "@hooks/useRequest";
+import { EventCard } from "@components/EventCard";
 
 const DROPPABLE_CLASSNAME = `droppable-day-wrapper`;
 
@@ -36,6 +40,8 @@ export const RightPanel: React.FC = () => {
     handleClose,
   } = useOpenCloseToggle();
   const [selectedEvent, setSelectedEvent] = React.useState<CalendarEvent>();
+  const moreEventsDialogState = useOpenCloseToggle();
+  const moreEventsRequestState = useRequest(CalendarApi.getAllEvents);
 
   React.useEffect(() => {
     CalendarApi.getAllEvents({
@@ -47,6 +53,14 @@ export const RightPanel: React.FC = () => {
       })
       .catch(console.log);
   }, [currentDate, addEvents]);
+
+  const onDrillDown = (date: Date) => {
+    moreEventsDialogState.handleOpen();
+    moreEventsRequestState.sendRequest({
+      startDate: startOfDay(date),
+      endDate: startOfDay(addDays(date, 1)),
+    });
+  };
 
   const handleDropAppEvent = (
     item: unknown,
@@ -92,63 +106,65 @@ export const RightPanel: React.FC = () => {
 
   return (
     <>
-      <Grid item>
-        <DroppableWrapper
-          onDrop={handleDropAppEvent}
-          acceptItemType={ItemTypes.EVENT}
-        >
-          <Calendar
-            style={{
-              minHeight: "80vh",
-            }}
-            date={currentDate}
-            onNavigate={(newDate) => {
-              handleDateChange(newDate);
-            }}
-            views={[Views.MONTH]}
-            eventPropGetter={(event) => {
-              return {
-                style: {
-                  backgroundColor: (event as any).entity.color,
+      <Grid item sx={{ overflowX: "auto" }}>
+        <Box minWidth={700} sx={{ width: "100%" }}>
+          <DroppableWrapper
+            onDrop={handleDropAppEvent}
+            acceptItemType={ItemTypes.EVENT}
+          >
+            <Calendar
+              style={{
+                minHeight: "80vh",
+              }}
+              date={currentDate}
+              onNavigate={(newDate) => {
+                handleDateChange(newDate);
+              }}
+              views={[Views.MONTH]}
+              eventPropGetter={(event) => {
+                return {
+                  style: {
+                    backgroundColor: (event as any).entity.color,
+                  },
+                };
+              }}
+              onSelectEvent={onSelectEvent}
+              components={{
+                dateCellWrapper: ({ children, value }) => {
+                  return (
+                    <DateCellContainer
+                      data-value={value}
+                      style={{
+                        width: "calc(100% / 7)",
+                      }}
+                      className={`${DROPPABLE_CLASSNAME}`}
+                    >
+                      {children}
+                    </DateCellContainer>
+                  );
                 },
-              };
-            }}
-            onSelectEvent={onSelectEvent}
-            components={{
-              dateCellWrapper: ({ children, value }) => {
-                return (
-                  <DateCellContainer
-                    data-value={value}
-                    style={{
-                      width: "calc(100% / 7)",
-                    }}
-                    className={`${DROPPABLE_CLASSNAME}`}
-                  >
-                    {children}
-                  </DateCellContainer>
-                );
-              },
+                eventWrapper: (props) => {
+                  if (
+                    (props.event as { entity: CalendarEvent }).entity
+                      .eventType === CalendarEventTypes.WORD_TRAINING_SESSION
+                  )
+                    return <div {...props} />;
 
-              eventWrapper: (props) => {
-                if (
-                  (props.event as { entity: CalendarEvent }).entity
-                    .eventType === CalendarEventTypes.WORD_TRAINING_SESSION
-                )
-                  return <div {...props} />;
-
-                return (
-                  <DraggableWrapper
-                    item={(props.event as any).entity}
-                    itemType={ItemTypes.EVENT}
-                  >
-                    <div {...props} />
-                  </DraggableWrapper>
-                );
-              },
-            }}
-            events={transform(getAssignedEvents(events))}
-          />
-        </DroppableWrapper>
+                  return (
+                    <DraggableWrapper
+                      item={(props.event as any).entity}
+                      itemType={ItemTypes.EVENT}
+                    >
+                      <div {...props} />
+                    </DraggableWrapper>
+                  );
+                },
+              }}
+              events={transform(getAssignedEvents(events))}
+              onDrillDown={onDrillDown}
+            />
+          </DroppableWrapper>
+        </Box>
       </Grid>
       <Dialog
         PaperProps={{
@@ -168,6 +184,34 @@ export const RightPanel: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button variant="contained" color="info" onClick={handleClose}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog fullWidth open={moreEventsDialogState.isOpen}>
+        <DialogTitle>All events</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2}>
+            {moreEventsRequestState.isLoading &&
+              new Array(4).fill(0).map((_, index) => (
+                <Grid key={index} item xs={12}>
+                  <Skeleton variant="rounded" height={50} />
+                </Grid>
+              ))}
+            {!moreEventsRequestState.isLoading &&
+              moreEventsRequestState.data?.events.map((event) => (
+                <Grid key={event._id} item xs={12}>
+                  <EventCard event={event} />
+                </Grid>
+              ))}
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={moreEventsDialogState.handleClose}
+          >
             Close
           </Button>
         </DialogActions>

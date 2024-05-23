@@ -68,8 +68,8 @@ export const WordGroupChoice: React.FC<WordGroupChoiceProps> = ({
           <Grid item md={11} xs={10}>
             <Title>Select group</Title>
           </Grid>
-          {new Array(LOADING_BLOCKS_NUMBER).fill(0).map(() => (
-            <Grid item xs={12} md={6}>
+          {new Array(LOADING_BLOCKS_NUMBER).fill(0).map((_, index) => (
+            <Grid key={index} item xs={12} md={6}>
               <Skeleton animation="wave" variant="rounded" height={40} />
             </Grid>
           ))}

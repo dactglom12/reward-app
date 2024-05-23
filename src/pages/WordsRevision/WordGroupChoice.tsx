@@ -13,33 +13,34 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Skeleton,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { sortGroups } from "./utils";
 import { WordGroupChartsSection } from "./WordGroupChartsSection";
 import { WordGroup } from "@typings/word";
 import { randomWordAmountOptions } from "./constants";
 import { useOpenCloseToggle } from "@hooks/useOpenCloseToggle";
 import { Title } from "@components/styled";
+import { useRequest } from "@hooks/useRequest";
 
 interface WordGroupChoiceProps {
   chooseRandom: () => void;
-  onUploadSuccess: () => void;
   onRandomWordsSelectChange: (event: SelectChangeEvent) => void;
   chooseGroup: (group: WordGroup) => void;
-  groups: WordGroup[];
   randomModeWordsAmount: number;
 }
+
+const LOADING_BLOCKS_NUMBER = 12;
 
 export const WordGroupChoice: React.FC<WordGroupChoiceProps> = ({
   chooseGroup,
   chooseRandom,
   onRandomWordsSelectChange,
-  onUploadSuccess,
   randomModeWordsAmount,
-  groups,
 }) => {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down("sm"));
@@ -48,6 +49,44 @@ export const WordGroupChoice: React.FC<WordGroupChoiceProps> = ({
     handleClose,
     handleOpen,
   } = useOpenCloseToggle();
+  const { sendRequest, data, error, isLoading } = useRequest(
+    WordsApi.getAllWordGroups
+  );
+
+  useEffect(() => {
+    sendRequest();
+  }, [sendRequest]);
+
+  const onUploadSuccess = () => {
+    sendRequest();
+  };
+
+  if (isLoading || !data)
+    return (
+      <Container>
+        <Grid container spacing={2}>
+          <Grid item md={11} xs={10}>
+            <Title>Select group</Title>
+          </Grid>
+          {new Array(LOADING_BLOCKS_NUMBER).fill(0).map(() => (
+            <Grid item xs={12} md={6}>
+              <Skeleton animation="wave" variant="rounded" height={40} />
+            </Grid>
+          ))}
+          <Grid item xs={12}>
+            <Skeleton animation="wave" variant="rounded" height={400} />
+          </Grid>
+        </Grid>
+      </Container>
+    );
+
+  if (error)
+    return (
+      <Container>
+        <Typography variant="h5">Couldn't load word groups...</Typography>
+        <Typography variant="body2">Please, reload page</Typography>
+      </Container>
+    );
 
   return (
     <Container>
@@ -91,7 +130,7 @@ export const WordGroupChoice: React.FC<WordGroupChoiceProps> = ({
             Random
           </Button>
         </Grid>
-        {sortGroups(groups).map((group) => (
+        {sortGroups(data.groups).map((group) => (
           <Grid xs={12} md={6} item key={group._id}>
             <Button
               variant="contained"
@@ -104,7 +143,9 @@ export const WordGroupChoice: React.FC<WordGroupChoiceProps> = ({
         ))}
       </Grid>
       <Grid mt={5} item xs={12}>
-        {groups.length > 0 && <WordGroupChartsSection wordGroups={groups} />}
+        {data.groups.length > 0 && (
+          <WordGroupChartsSection wordGroups={data.groups} />
+        )}
       </Grid>
       <Dialog
         maxWidth="xs"

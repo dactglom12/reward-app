@@ -53,7 +53,6 @@ export const WordsRevisionPage: React.FC = () => {
   const [words, setWords] = useState<Word[]>([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [wordGroup, setWordGroup] = useState<WordGroup>();
-  const [groups, setGroups] = useState<WordGroup[]>([]);
   const [isWordsLoading, setIsWordsLoading] = useState(false);
   const {
     handleClose,
@@ -82,16 +81,6 @@ export const WordsRevisionPage: React.FC = () => {
         .filter((val) => val),
     [trainingSessionHash, words]
   );
-
-  const loadWordGroups = async () => {
-    const groupsResponse = await WordsApi.getAllWordGroups();
-
-    setGroups(groupsResponse.data.groups);
-  };
-
-  useEffect(() => {
-    void loadWordGroups();
-  }, []);
 
   useEffect(() => {
     if (!wordGroup && !isRandomMode) return;
@@ -123,10 +112,6 @@ export const WordsRevisionPage: React.FC = () => {
 
   const chooseGroup = (group: WordGroup) => {
     setWordGroup(group);
-  };
-
-  const onUploadSuccess = () => {
-    loadWordGroups();
   };
 
   const resetPageState = () => {
@@ -200,9 +185,7 @@ export const WordsRevisionPage: React.FC = () => {
       <WordGroupChoice
         chooseGroup={chooseGroup}
         chooseRandom={chooseRandom}
-        groups={groups}
         onRandomWordsSelectChange={onRandomWordsSelectChange}
-        onUploadSuccess={onUploadSuccess}
         randomModeWordsAmount={randomModeWordsAmount}
       />
     );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "@routes/constants";
 import { AuthApi } from "@api/authApi";
@@ -13,14 +13,24 @@ import {
 } from "./auth.styles";
 import { Box } from "@mui/material";
 import { Title } from "@components/styled";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { emailRegexp, passwordRegexp } from "constants/auth";
+
+type LoginFormFields = {
+  email: string;
+  password: string;
+};
 
 export const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { authenticate, isAuthenticated } = React.useContext(
     AuthenticationContext
   );
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormFields>();
 
   React.useEffect(() => {
     if (isAuthenticated) {
@@ -28,24 +38,14 @@ export const LoginPage: React.FC = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Validate email and password fields
-    if (!email || !password) {
-      alert("Please enter both email and password");
-      return;
-    }
-
-    const requestDto = { email, password };
-
-    AuthApi.login(requestDto)
-      .then((res) => {
-        console.log(res);
+  const onSubmit: SubmitHandler<LoginFormFields> = (values) => {
+    AuthApi.login(values)
+      .then((_res) => {
         navigate(RoutePaths.HOME);
         authenticate();
       })
       .catch((err) => {
-        alert(err);
+        console.error(err);
       });
   };
 
@@ -59,32 +59,37 @@ export const LoginPage: React.FC = () => {
           <Subtitle>Don't have an account yet?</Subtitle>
           <SignUpLink to={RoutePaths.SIGN_UP}>Create</SignUpLink>
         </SubtitleSectionContainer>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <InputContainer
+            {...register("email", { pattern: emailRegexp, required: true })}
             variant="outlined"
             margin="normal"
             required
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
             autoComplete="email"
             autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            error={!!errors.email}
+            helperText={!!errors.email ? "Incorrect email format" : undefined}
           />
           <InputContainer
+            {...register("password", {
+              pattern: passwordRegexp,
+              required: true,
+            })}
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            name="password"
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            error={!!errors.password}
+            helperText={
+              !!errors.password ? "Incorrect password format" : undefined
+            }
           />
           <Button type="submit" fullWidth variant="contained" color="primary">
             Log in

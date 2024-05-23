@@ -61,6 +61,8 @@ class WordsApi {
   static async getAllWordGroups(): Promise<
     AxiosResponse<{ groups: WordGroup[] }>
   > {
+    await sleep(1000);
+
     return baseAxiosClient.get(`${subroute}/groups`);
   }
 
